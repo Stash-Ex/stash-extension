@@ -1,38 +1,29 @@
 import React from 'react';
-import { useState } from 'react';
-import logo from './logo.svg';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getCurrentUrl } from './chromeServices/currentUrlSlice';
+
 import './App.css';
-import Caches from './components/cache/Caches';
-
-
+import SiteCaches from './components/cache/SiteCaches';
 
 const App = () => {
-  const [logs, setLogs] = useState([]);
-  const log = (message) => {
-    const logList = [...logs];
-    logList.push(`Log: ${message}`);
-    setLogs(logList);
-  } 
 
-  const port = chrome.runtime.connect({ name: "popup" });
-  port.onMessage.addListener((message) => {
-    log(`received message: ${message}`);
-  })
-  
-  const buttonAction = () => {
-    port.postMessage("Message from UI");
-    log(`Posted message to port ${port.name}`);
-  }
+  const dispatch = useDispatch();
+
+  useEffect(() =>{
+    dispatch(getCurrentUrl());
+  }, [dispatch]);
 
   return (
     <div className="App">
       <header className="App-header">
         <p>
-          Welcome to <code style={{color: 'black', backgroundColor: '#A9A9A9'}}>Meta</code>Cache. The internet-wide scavenger hunt.
+          Welcome to <code style={{color: 'black', backgroundColor: '#A9A9A9'}}>Meta</code>Cache.<br/>
+          The internet-wide scavenger hunt.
         </p>
       </header>
       <main>
-        <Caches />
+        <SiteCaches />
       </main>
     </div>
   );
