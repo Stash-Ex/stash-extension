@@ -1,9 +1,5 @@
-// import { getSiteCaches } from "../web3/lib/metaSiteUtils";
+import { getSiteCaches } from "../web3/lib/metaSiteUtils";
 
-const caches = [
-  {id: "id1", prize: "1 ETH", hints: ["hint1", "hint2", "hint3"]},
-  {id: "id2", prize: "Punk #3357", hints: ["hint1", "hint2", "hint3"]}
-]
 
 chrome.runtime.onConnect.addListener(async (port) => {
   if (port.name === "popup") {
@@ -37,15 +33,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendRespons) => {
 
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  console.log("Background onUpdated");
+  console.log(changeInfo)
   if (changeInfo.status === "complete") {
-    console.log('updating tab info');
     const tabs = await chrome.tabs.query({currentWindow: true, active: true});
     try {
       const active = tabs[0];
-      // const caches = await getSiteCaches("url");
-      // console.log("Got Caches in background onUpdated");
-      // console.log(caches);
+      const caches = await getSiteCaches(active.url);
       await chrome.action.setBadgeText({tabId: active.id, text: caches.length.toString()});
     } catch (error) {
       console.log(error.toString());
@@ -55,17 +48,12 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
   console.log(activeInfo);
-  console.log("Background onActivated");
   const tabs = await chrome.tabs.query({currentWindow: true, active: true});
   try {
     const active = tabs[0];
-    // const caches = await getSiteCaches("url");
-    // console.log("Got Caches in background onActivated");
-    // console.log(caches);
+    const caches = await getSiteCaches(active.url);
     await chrome.action.setBadgeText({tabId: active.id, text: caches.length.toString()});
   } catch (error) {
     console.log(error.toString());
   }
 })
-
-export {}

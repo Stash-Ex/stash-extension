@@ -4,8 +4,7 @@ export const getSiteCaches = async (siteUrl: string) => {
   console.log(`Getting caches for URL: ${siteUrl}`);
   await new Promise(resolve => setTimeout(resolve, 500));
 
-  const urlHash = keccak256(siteUrl).toString('hex');
-  console.log(`siteUrlHash is ${urlHash}`)
+  console.log(`siteUrlHash is ${keccak256(siteUrl).toString('hex')}`)
 
   return [
       {id: keccak256("secretKey1").toString('hex'), prize: "1 ETH", hints: ["hint1", "hint2", "hint3"]},

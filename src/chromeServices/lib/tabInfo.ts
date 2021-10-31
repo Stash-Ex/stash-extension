@@ -1,4 +1,5 @@
 export function isLocalNetwork(hostname = window.location.hostname) {
+  console.log(hostname);
   return (
     (['localhost', '127.0.0.1', '', '::1'].includes(hostname))
     || (hostname.startsWith('192.168.'))

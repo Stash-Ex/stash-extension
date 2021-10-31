@@ -10,7 +10,7 @@ const Cache = ({ cache }) => {
 
   return (
     <div className="cache">
-      <h1>Contents: {cache.prize}</h1>
+      <h4>Contents: {cache.prize}</h4>
       <ul>
         {cache.hints.map((hint, index) => 
           <li key={index}>{hint}</li>

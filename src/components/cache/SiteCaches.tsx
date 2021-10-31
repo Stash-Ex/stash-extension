@@ -21,7 +21,8 @@ const SiteCaches = () => {
 
   return (
     <div>
-      <p>Caches hidden on page: {currentUrl}</p>
+      <h1>Scavenging Page</h1>
+      <h3>{currentUrl}</h3>
       {caches.map((cache, index) => (
         <Cache key={index} cache={cache}/>
       ))}
