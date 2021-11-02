@@ -18,7 +18,7 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <p>
-          Welcome to <code style={{color: 'black', backgroundColor: '#A9A9A9'}}>Meta</code>Cache.<br/>
+          Welcome to <code style={{color: 'black', backgroundColor: '#A9A9A9'}}>&lt;MetaCache&gt;</code>.<br/>
           The internet-wide scavenger hunt.
         </p>
       </header>
