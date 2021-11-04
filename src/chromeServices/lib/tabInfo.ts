@@ -1,3 +1,4 @@
+/*global chrome*/
 export function isLocalNetwork(hostname = window.location.hostname) {
   console.log(hostname);
   return (
@@ -15,8 +16,10 @@ export const getCurrentURL = async (): Promise<string> => {
   }
 
   let queryOptions = { active: true, currentWindow: true };
-  let tabs = await chrome.tabs.query(queryOptions);
-  console.log('query');
-  console.log(JSON.stringify(tabs));
-  return tabs[0].url;
+  console.log('getCurrentUrl');
+  // let tabs = await chrome.tabs.query(queryOptions);
+  // console.log(JSON.stringify(tabs));
+  // return tabs[0].url;
+  console.log(JSON.stringify(window.location, null, 4));
+  return Promise.resolve(window.location.href);
 }

@@ -8,9 +8,14 @@ import { getSiteCaches } from '../../web3/siteCachesSlice';
 import Cache from './Cache';
 
 const SiteCaches = () => {
-  const { caches } = useSelector((state: RootState) => state.siteCaches);
-  const { currentUrl, loading } = useSelector((state: RootState) => state.currentUrl);
-
+  const { caches } = useSelector((state: RootState) => {
+    console.log("siteCaches" + JSON.stringify(state));
+    return state.siteCaches
+  });
+  const { currentUrl, loading } = useSelector((state: RootState) => {
+    console.log("currentUrl" + JSON.stringify(state));
+    return state.currentUrl
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,7 +29,7 @@ const SiteCaches = () => {
       <h1>Scavenging Page</h1>
       <h3>{currentUrl}</h3>
       {caches.map((cache, index) => (
-        <Cache key={index} cache={cache}/>
+        <Cache key={index} cache={cache} />
       ))}
     </div>
   )
