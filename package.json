@@ -31,11 +31,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "INLINE_RUNTIME_CHUNK=false craco build && yarn run build-rename",
-    "build-rename": "yarn run build-rename-css && yarn run build-fix-sourcemap-css && yarn run build-fix-index-html",
-    "build-rename-css": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace main. build/static/css/*",
-    "build-fix-sourcemap-css": "replace-in-file \"/sourceMappingURL=main\\.[^\\.]+\\.css\\.map/i\" \"sourceMappingURL=main.css.map\" build/static/css/main.css --isRegex",
-    "build-fix-index-html": "replace-in-file \"//static/css/main\\.[^\\.]+\\.css/i\" \"/static/css/main.css\" build/index.html --isRegex",
+    "build": "INLINE_RUNTIME_CHUNK=false craco build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

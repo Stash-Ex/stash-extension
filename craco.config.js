@@ -1,3 +1,6 @@
+const isCssConfig = p => (Reflect.has(p, "options") &&Reflect.has(p.options, "filename") &&
+p.options.filename && p.options.filename === "static/css/[name].[contenthash:8].css")
+
 module.exports = {
   webpack: {
     configure: (webpackConfig, {env, paths}) => {
@@ -19,7 +22,16 @@ module.exports = {
                         return false
                     },
                 },
-            }
+            },
+            plugins: [
+                ...(webpackConfig.plugins.map(p => {
+                    if (isCssConfig(p)) {
+                        p.options.filename = "static/css/[name].css"
+                        p.options.chunkFilename = "static/css/[name].chunk.css"
+                    }
+                    return p;
+                }))
+            ]
         }
     },
   }
