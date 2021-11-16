@@ -9,21 +9,34 @@ import App from './App';
 
 import { store } from './store';
 
+// insert font awesome styles in iframe css as they are separately included in bundle
+import { config, dom } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
+
+// insert regular css in iframe to keep separate from page css.
+const getCss = () => {
+  try {
+    return chrome.runtime.getURL("/static/css/main.css")
+  } catch(e) {
+    console.log(`Exception: ${e}`)
+    return "http://localhost:3000/static/css/main.css"
+  }
+}
+
 
 const AppFrame = () => {
   return (
-    <Frame head={[<link type="text/css" rel="stylesheet" href={chrome.runtime.getURL("/static/css/main.css")} ></link>]}> 
+    <Frame head={[<link type="text/css" rel="stylesheet" href={getCss()} ></link>,<style>${dom.css()}</style>]}> 
       <FrameContextConsumer>
         {
-        // Callback is invoked with iframe's window and document instances
-            ({document, window}) => {
-              // Render Children
-              return (
-                <Provider store={store}>
-                  <App />
-                </Provider>
-              )
-            }
+          // Callback is invoked with iframe's window and document instances
+          ({document, window}) => {
+            return (
+              <Provider store={store}>
+                <App />
+              </Provider>
+            )
+          }
         }
         </FrameContextConsumer>
     </Frame>
@@ -34,20 +47,22 @@ const app = document.createElement('div');
 app.id = "metacache-extension-root";
 document.body.appendChild(app);
 
-ReactDOM.render(
-  <AppFrame />,
-  app
-);
+ReactDOM.render(<AppFrame />, app);
 
-app.style.display = "none";
-chrome.runtime.onMessage.addListener(
-   function(request, sender, sendResponse) {
-      if( request.message === "clicked_browser_action") {
-        toggle();
-      }
-   }
-);
-
+// Toggle app on and off
+try {
+  app.style.display = "none";
+  chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if( request.message === "clicked_browser_action") {
+          toggle();
+        }
+    }
+  );
+} catch (e) {
+  console.log(`Exception: ${e}`)
+  app.style.display = "block";
+}
 function toggle(){
    if(app.style.display === "none"){
      app.style.display = "block";

@@ -4,6 +4,7 @@ p.options.filename && p.options.filename === "static/css/[name].[contenthash:8].
 module.exports = {
   webpack: {
     configure: (webpackConfig, {env, paths}) => {
+        // console.log(JSON.stringify(webpackConfig, null, 4))
         return {
             ...webpackConfig,
             entry: {
