@@ -7,6 +7,7 @@ import { getCurrentUrl } from './chromeServices/currentUrlSlice';
 import './App.css';
 import SiteCaches from './views/Discover/SiteCaches';
 import NavBar from './components/navbar/NavBar';
+import CacheCreations from './views/Create/CacheCreations';
 
 const App = () => {
 
@@ -17,7 +18,6 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    
     <div className="App">
       <header className="App-header">
         <p>
@@ -32,7 +32,7 @@ const App = () => {
           <Route exact path="/">
             <Redirect to="/Claim" />
           </Route>
-          <Route exact path="/Create" />
+          <Route exact path="/Create" component={CacheCreations} />
         </Switch>
       </main>
     </div>

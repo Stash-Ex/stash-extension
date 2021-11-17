@@ -1,4 +1,5 @@
 import React from "react"
+import CacheHint from "./CacheHint";
 
 import ClaimCacheForm from './ClaimCacheForm';
 
@@ -11,11 +12,11 @@ const Cache = ({ cache }) => {
   return (
     <div className="cache">
       <h4>Contents: {cache.prize}</h4>
-      <ul>
-        {cache.hints.map((hint, index) => 
-          <li key={index}>{hint}</li>
-        )}
-      </ul>
+      {cache.hints.map((hint, index) => 
+        <div>
+          <CacheHint index={index} cacheHint={hint}/>
+        </div>
+      )}
       <ClaimCacheForm claimCache={claimCache}/>
     </div>
   )

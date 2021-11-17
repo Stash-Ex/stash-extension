@@ -1,5 +1,7 @@
 import React, { useState } from "react"
 import CacheKey from "./CacheKey"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMinusCircle } from '@fortawesome/free-solid-svg-icons'
 
 const ClaimCacheForm = ({ claimCache }) => {
   const [cacheKeys, setCacheKeys] = useState([""])
@@ -25,11 +27,17 @@ const ClaimCacheForm = ({ claimCache }) => {
   return (
     <form onSubmit={submitClaim}>
       {cacheKeys.map((cacheKey, index) => (
-        <CacheKey 
-          index={index}
-          cacheKey={cacheKey}
-          handleKeyChange={handleKeyChange}
-          deleteKey={deleteKey}/>
+        <div>
+          <CacheKey 
+            index={index}
+            cacheKey={cacheKey}
+            handleKeyChange={handleKeyChange}/>
+          <FontAwesomeIcon 
+            icon={faMinusCircle}
+            onClick={() => deleteKey(index)}
+            size="lg"
+          />
+        </div>
       ))}
       <button onClick={addNewKeyInput}>Add Key</button>
       <button>Claim Cache</button>
