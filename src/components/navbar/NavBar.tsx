@@ -7,8 +7,8 @@ const NavBar = () => {
     <div>
       <h5>NAVBAR</h5>
       <ul>
-        <li><Link to="/Claim">Home</Link></li>
-        <li><Link to="/Create">About</Link></li>
+        <li><Link to="/Claim">Discover</Link></li>
+        <li><Link to="/Create">Create</Link></li>
      	</ul>
       <hr />
     </div>

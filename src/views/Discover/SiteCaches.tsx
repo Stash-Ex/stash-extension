@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { getSiteCaches } from '../../web3/siteCachesSlice';
 
-import Cache from './Cache';
+import Cache from '../../components/cache/Cache';
 
 const SiteCaches = () => {
   const { caches } = useSelector((state: RootState) => {

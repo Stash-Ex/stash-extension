@@ -5,7 +5,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { getCurrentUrl } from './chromeServices/currentUrlSlice';
 
 import './App.css';
-import SiteCaches from './components/cache/SiteCaches';
+import SiteCaches from './views/Discover/SiteCaches';
 import NavBar from './components/navbar/NavBar';
 
 const App = () => {
