@@ -1,7 +1,7 @@
 import React from "react"
 import CacheHint from "./CacheHint";
 
-import ClaimCacheForm from './ClaimCacheForm';
+import ClaimCacheForm from '../forms/ClaimCacheForm';
 
 const Cache = ({ cache }) => {
   

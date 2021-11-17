@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import CacheKey from "./CacheKey"
+import CacheKey from "../cache/CacheKey"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons'
 

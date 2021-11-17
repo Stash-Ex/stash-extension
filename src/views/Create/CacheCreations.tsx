@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { getSiteCaches } from '../../web3/siteCachesSlice';
 
-import CreateCacheForm from '../../components/cache/CreateCacheForm';
+import CreateCacheForm from '../../components/forms/CreateCacheForm';
 
 const CacheCreations = () => {
   const { currentUrl, loading } = useSelector((state: RootState) => {
