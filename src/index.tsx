@@ -1,6 +1,7 @@
 /*global chrome*/
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import Frame, { FrameContextConsumer }from 'react-frame-component';
 
@@ -33,7 +34,9 @@ const AppFrame = () => {
           ({document, window}) => {
             return (
               <Provider store={store}>
-                <App />
+                <MemoryRouter>
+                  <App />
+                </MemoryRouter>
               </Provider>
             )
           }
