@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { getCurrentUrl } from './chromeServices/currentUrlSlice';
@@ -12,16 +12,23 @@ import CacheCreations from './views/Create/CacheCreations';
 const App = () => {
 
   const dispatch = useDispatch();
+  // const [isConnected, setIsConnected] = useState(isWalletConnected())
+  const [address, setAddress] = useState<string>()
 
-  useEffect(() =>{
+  useEffect(() => {
     dispatch(getCurrentUrl());
   }, [dispatch]);
+
+  const handleConnectClick = async () => {
+    // setIsConnected(isWalletConnected())
+    // setAddress(await walletAddress())
+  }
 
   return (
     <div className="App">
       <header className="App-header">
         <p>
-          Welcome to <code style={{color: 'black', backgroundColor: '#A9A9A9'}}>&lt;MetaCache&gt;</code>.<br/>
+          Welcome to <code style={{ color: 'black', backgroundColor: '#A9A9A9' }}>&lt;MetaCache&gt;</code>.<br />
           The internet-wide scavenger hunt.
         </p>
       </header>

@@ -1,31 +1,44 @@
 {
   "manifest_version": 3,
-
   "name": "MetaCache Extension",
-  "description": "This extension will display any caches stored on the web page.",
+  "description": "This extension will display any caches stored on the user's current web page.",
   "version": "1.0",
   "action": {
-   "default_icon": "icon.png"
+    "default_icon": "icon.png"
   },
   "background": {
     "service_worker": "./static/js/background.js"
   },
-  "content_scripts" : [
+  "content_scripts": [
     {
-      "matches": [ "<all_urls>" ],
-      "css": ["/index.css"],
-      "js": ["/static/js/main.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "css": [
+        "/index.css"
+      ],
+      "js": [
+        "/static/js/main.js"
+      ]
     }
+  ],
+  "host_permissions": [
+    "*://*/*"
   ],
   "web_accessible_resources": [
     {
-      "resources": ["index.html", "static/*"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "index.html",
+        "static/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "permissions": [
-   "activeTab",
-   "scripting",
-   "tabs"
-   ]
+    "activeTab",
+    "scripting",
+    "tabs"
+  ]
 }

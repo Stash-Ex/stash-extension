@@ -9,13 +9,13 @@ import CreateCacheForm from '../../components/forms/CreateCacheForm';
 
 const CacheCreations = () => {
   const { currentUrl, loading } = useSelector((state: RootState) => {
-    console.log("currentUrl" + JSON.stringify(state));
     return state.currentUrl
   });
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!loading && currentUrl) {
+      // dispatch(getSiteCaches(currentUrl));
       dispatch(getSiteCaches(currentUrl));
     }
   }, [currentUrl, loading, dispatch])

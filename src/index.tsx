@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import Frame, { FrameContextConsumer }from 'react-frame-component';
+import Frame, { FrameContextConsumer } from 'react-frame-component';
 
 import './index.css';
 import App from './App';
@@ -18,20 +18,19 @@ config.autoAddCss = false;
 const getCss = () => {
   try {
     return chrome.runtime.getURL("/static/css/main.css")
-  } catch(e) {
+  } catch (e) {
     console.log(`Exception: ${e}`)
     return "http://localhost:3000/static/css/main.css"
   }
 }
 
-
 const AppFrame = () => {
   return (
-    <Frame head={[<link type="text/css" rel="stylesheet" href={getCss()} ></link>,<style>${dom.css()}</style>]}> 
+    <Frame head={[<link type="text/css" rel="stylesheet" href={getCss()} ></link>, <style>${dom.css()}</style>]}>
       <FrameContextConsumer>
         {
           // Callback is invoked with iframe's window and document instances
-          ({document, window}) => {
+          ({ document, window }) => {
             return (
               <Provider store={store}>
                 <MemoryRouter>
@@ -41,9 +40,10 @@ const AppFrame = () => {
             )
           }
         }
-        </FrameContextConsumer>
+      </FrameContextConsumer>
     </Frame>
   )
+
 }
 
 const app = document.createElement('div');
@@ -56,20 +56,23 @@ ReactDOM.render(<AppFrame />, app);
 try {
   app.style.display = "none";
   chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        if( request.message === "clicked_browser_action") {
-          toggle();
-        }
+    function (request, sender, sendResponse) {
+      if (request.message === "clicked_browser_action") {
+        toggle();
+      }
     }
   );
 } catch (e) {
   console.log(`Exception: ${e}`)
   app.style.display = "block";
 }
-function toggle(){
-   if(app.style.display === "none"){
-     app.style.display = "block";
-   }else{
-     app.style.display = "none";
-   }
+
+function toggle() {
+  if (app.style.display === "none") {
+    app.style.display = "block";
+  } else {
+    app.style.display = "none";
+  }
 }
+
+

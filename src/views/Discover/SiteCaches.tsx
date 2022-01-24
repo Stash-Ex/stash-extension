@@ -9,20 +9,22 @@ import Cache from '../../components/cache/Cache';
 
 const SiteCaches = () => {
   const { caches } = useSelector((state: RootState) => {
-    console.log("siteCaches" + JSON.stringify(state));
     return state.siteCaches
   });
   const { currentUrl, loading } = useSelector((state: RootState) => {
-    console.log("currentUrl" + JSON.stringify(state));
     return state.currentUrl
   });
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!loading && currentUrl) {
-      dispatch(getSiteCaches(currentUrl));
+      dispatch(getSiteCaches("1"));
     }
   }, [currentUrl, loading, dispatch])
+
+  useEffect(() => {
+    chrome.runtime.sendMessage({ "message": "update_cache_count", "data": caches.length })
+  })
 
   return (
     <div>

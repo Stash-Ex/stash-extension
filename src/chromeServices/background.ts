@@ -1,83 +1,54 @@
-import { getSiteCaches } from "../web3/lib/metaSiteUtils";
+import { cachesAtLocation } from "../web3/lib/starknet/metacache.service";
+import { number } from "starknet";
 
 
-chrome.runtime.onConnect.addListener(async (port) => {
-  console.log("connected: " + port)
-  if (port.name === "popup") {
-      port.onDisconnect.addListener(function() {
-         console.log("popup has been closed");
-      });
-
-      port.onMessage.addListener(async (message) => {
-        console.log(`message received: ${message}`);
-        const tabs = await chrome.tabs.query({currentWindow: true, active: true});
-        const currentTab = tabs[0];
-        console.log(currentTab);
-        
-        if (message === "getCurrentURL") {
-          port.postMessage(currentTab.url);
-        } else {
-          chrome.scripting.executeScript({
-            target: { tabId: currentTab.id },
-            func: () => document.body.style.backgroundColor = 'green'
-          });
-          // port.postMessage("this is the response")
-        }
+// Messages received from content script 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log(`request: ${request}`);
+  console.log(`sender: ${JSON.stringify(sender)}`);
+  if (request["message"] === "update_cache_count") {
+    chrome.tabs.query({ active: true, currentWindow: true },
+      function (tabs) {
+        var activeTab = tabs[0];
+        chrome.action.setBadgeText({ tabId: activeTab.id, text: request["data"].toString() });
       });
   }
 });
 
-chrome.runtime.onMessage.addListener((request, sender, sendRespons) => {
-  console.log(`request: ${request}`);
-  console.log(`sender: ${sender}`);
-});
-
-const stringToHTML = (str) => {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(str, 'text/html');
-  return doc.body;
-}
-
+// Used to toggle the content script on the page
 chrome.action.onClicked.addListener(async (tab) => {
   console.log(`browseraction clicked: ${JSON.stringify(tab)}`)
   try {
     // Send a message to the active tab
-    chrome.tabs.query({active: true, currentWindow:true},
-    function(tabs) {
-       var activeTab = tabs[0];
-       chrome.tabs.sendMessage(activeTab.id, 
-           {"message": "clicked_browser_action"}
-       );
-    });
+    chrome.tabs.query({ active: true, currentWindow: true },
+      function (tabs) {
+        var activeTab = tabs[0];
+        chrome.tabs.sendMessage(activeTab.id,
+          { "message": "clicked_browser_action" }
+        );
+      });
   } catch (e) {
     console.log("error")
     console.error(e)
   }
 })
 
+// Can't use starknet.js in service worker due to dependence on axios
+// https://github.com/axios/axios/issues/1219
+// chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+//   console.log("onUpdated: " + JSON.stringify(changeInfo))
+//   if (changeInfo.status === "complete") {
+//     const tabs = await chrome.tabs.query({ currentWindow: true, active: true });
+//     try {
+//       const active = tabs[0];
+//       const numCachesResult = await cachesAtLocation("1", "goerli-alpha");
+//       console.log(numCachesResult)
 
-chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  console.log(changeInfo)
-  if (changeInfo.status === "complete") {
-    const tabs = await chrome.tabs.query({currentWindow: true, active: true});
-    try {
-      const active = tabs[0];
-      const caches = await getSiteCaches(active.url);
-      await chrome.action.setBadgeText({tabId: active.id, text: caches.length.toString()});
-    } catch (error) {
-      console.log(error.toString());
-    }
-  }
-});
-
-chrome.tabs.onActivated.addListener(async (activeInfo) => {
-  console.log(activeInfo);
-  const tabs = await chrome.tabs.query({currentWindow: true, active: true});
-  try {
-    const active = tabs[0];
-    const caches = await getSiteCaches(active.url);
-    await chrome.action.setBadgeText({tabId: active.id, text: caches.length.toString()});
-  } catch (error) {
-    console.log(error.toString());
-  }
-})
+//       const numCaches = number.toBN(numCachesResult.result[0])
+//       console.log(numCaches.toString())
+//       await chrome.action.setBadgeText({ tabId: active.id, text: numCaches.toString() });
+//     } catch (error) {
+//       console.log(error.toString());
+//     }
+//   }
+// });
