@@ -10,6 +10,7 @@ module.exports = {
             entry: {
                 main: [env === 'development' && require.resolve('react-dev-utils/webpackHotDevClient'), paths.appIndexJs].filter(Boolean),
                 background: './src/chromeServices/background.ts',
+                walletProxy: './src/walletProxy/script.ts'
             },
             output: {
                 ...webpackConfig.output,

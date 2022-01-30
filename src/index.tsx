@@ -70,9 +70,30 @@ try {
 function toggle() {
   if (app.style.display === "none") {
     app.style.display = "block";
+    document.dispatchEvent(new CustomEvent('WALLET_PROXY', {
+      detail: { request: 'get_starknet_address' }
+    }))
   } else {
     app.style.display = "none";
   }
 }
+
+// attach walletProxy
+var s = document.createElement('script');
+s.src = chrome.runtime.getURL('/static/js/walletProxy.js');
+s.onload = function () {
+  //@ts-ignore
+  this.remove();
+  console.log('walletProxy script loaded')
+};
+(document.head || document.documentElement).appendChild(s);
+
+// Event listener
+document.addEventListener('STARKNET_WALLET_RESPONSE', ({ detail }: CustomEvent) => {
+  // alert(JSON.stringify(e));
+  console.log("REACT EVENT LISTENER")
+  console.log(JSON.stringify(detail))
+});
+
 
 

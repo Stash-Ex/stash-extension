@@ -19,7 +19,8 @@
       ],
       "js": [
         "/static/js/main.js"
-      ]
+      ],
+      "run_at": "document_end"
     }
   ],
   "host_permissions": [
@@ -29,7 +30,9 @@
     {
       "resources": [
         "index.html",
-        "static/*"
+        "static/*",
+        "web3Proxy.js",
+        "web3Proxy.js.map"
       ],
       "matches": [
         "<all_urls>"
