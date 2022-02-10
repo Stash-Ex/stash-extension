@@ -2,22 +2,23 @@ import { cachesAtLocation } from "../web3/lib/starknet/metacache.service";
 import { number } from "starknet";
 
 
-// Messages received from content script 
+// main handler for messages received from content script 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log(`request: ${request}`);
-  console.log(`sender: ${JSON.stringify(sender)}`);
   if (request["message"] === "update_cache_count") {
-    chrome.tabs.query({ active: true, currentWindow: true },
-      function (tabs) {
-        var activeTab = tabs[0];
-        chrome.action.setBadgeText({ tabId: activeTab.id, text: request["data"].toString() });
-      });
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      var activeTab = tabs[0];
+      chrome.action.getBadgeText({ tabId: activeTab.id }, (currentBadgeText) => {
+        const newBadgeText = request["data"].toString();
+        if (newBadgeText !== currentBadgeText) {
+          chrome.action.setBadgeText({ tabId: activeTab.id, text: request["data"].toString() });
+        }
+      })
+    });
   }
 });
 
 // Used to toggle the content script on the page
 chrome.action.onClicked.addListener(async (tab) => {
-  console.log(`browseraction clicked: ${JSON.stringify(tab)}`)
   try {
     // Send a message to the active tab
     chrome.tabs.query({ active: true, currentWindow: true },
@@ -28,7 +29,6 @@ chrome.action.onClicked.addListener(async (tab) => {
         );
       });
   } catch (e) {
-    console.log("error")
     console.error(e)
   }
 })

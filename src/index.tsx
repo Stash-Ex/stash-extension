@@ -14,6 +14,7 @@ import { store } from './store';
 import { config, dom } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 
+
 // insert regular css in iframe to keep separate from page css.
 const getCss = () => {
   try {
@@ -43,14 +44,10 @@ const AppFrame = () => {
       </FrameContextConsumer>
     </Frame>
   )
-
 }
 
 const app = document.createElement('div');
 app.id = "metacache-extension-root";
-document.body.appendChild(app);
-
-ReactDOM.render(<AppFrame />, app);
 
 // Toggle app on and off
 try {
@@ -70,30 +67,23 @@ try {
 function toggle() {
   if (app.style.display === "none") {
     app.style.display = "block";
-    document.dispatchEvent(new CustomEvent('WALLET_PROXY', {
-      detail: { request: 'get_starknet_address' }
-    }))
   } else {
     app.style.display = "none";
   }
 }
 
-// attach walletProxy
+// attach walletproxy for listener setup
 var s = document.createElement('script');
 s.src = chrome.runtime.getURL('/static/js/walletProxy.js');
 s.onload = function () {
   //@ts-ignore
   this.remove();
   console.log('walletProxy script loaded')
+
+  // Attach and render app only after walletProxy loads, after the walletProxy listeners are configured
+  document.body.appendChild(app);
+  ReactDOM.render(<AppFrame />, app);
 };
 (document.head || document.documentElement).appendChild(s);
-
-// Event listener
-document.addEventListener('STARKNET_WALLET_RESPONSE', ({ detail }: CustomEvent) => {
-  // alert(JSON.stringify(e));
-  console.log("REACT EVENT LISTENER")
-  console.log(JSON.stringify(detail))
-});
-
 
 
