@@ -13,14 +13,12 @@ export const getStarknet = createAsyncThunk("web3/loadStarknet",
 export interface StarknetState {
     provider: ProviderInterface;
     account?: string;
-    isConnected: boolean;
     loading: boolean;
     error: object;
 }
 
 const initialState = {
     provider: defaultProvider,
-    isConnected: false,
     loading: false,
     error: null
 } as StarknetState;
@@ -30,18 +28,17 @@ export const starknetSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: builder => {
-        builder.addCase(getStarknet.fulfilled, (state, action) => {
-            state.account = action.payload;
-            state.isConnected = action.payload?.length > 0
-            state.loading = false;
-        })
+        builder
+            .addCase(getStarknet.fulfilled, (state, action) => {
+                state.account = action.payload;
+                state.loading = false;
+            })
             .addCase(getStarknet.pending, (state) => {
                 state.loading = true;
             })
             .addCase(getStarknet.rejected, (state, action) => {
                 // state.caches = [];
                 state.loading = false;
-                state.isConnected = false;
                 state.error = action.error;
             })
     }

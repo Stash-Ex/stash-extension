@@ -16,7 +16,6 @@ const getStarknetWithRetry = async (getAuthorization = false) => {
 
         console.log("Called injected script Event Listener")
         console.log(JSON.stringify(starknet))
-        console.log(JSON.stringify(account))
 
         getStarknetAttempts = 0
         document.dispatchEvent(new CustomEvent('ARGENT_WALLET_RES', {
@@ -25,7 +24,7 @@ const getStarknetWithRetry = async (getAuthorization = false) => {
     } catch (error) {
         if (getStarknetAttempts++ < 5) {
             console.log(`Found expected error getting starknet${error}. Retry #${getStarknetAttempts}`)
-            setTimeout(getStarknetWithRetry, getStarknetAttempts * 1.5 * 1000)
+            setTimeout(getStarknetWithRetry, getStarknetAttempts * 3000)
         }
     }
 }

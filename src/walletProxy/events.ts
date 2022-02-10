@@ -25,6 +25,6 @@ const handleStarknetChange = ({ detail }: CustomEvent) => {
 
 export const connectWallet = async (getAuthorization: boolean) => {
     const event = new CustomEvent('ARGENT_WALLET_REQ', { detail: { getAuthorization } });
-    const starknetWallet = await dispatchEventAndWait(event, 'ARGENT_WALLET_RES', handleStarknetChange, 3000);
+    const starknetWallet = await dispatchEventAndWait(event, 'ARGENT_WALLET_RES', handleStarknetChange, 30000);
     return starknetWallet;
 }
