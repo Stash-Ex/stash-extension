@@ -1,11 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { uint256, ProviderInterface, defaultProvider } from "starknet";
+import { RootState } from "../store";
 import { connectWallet } from "../walletProxy/events";
+import { createMetacache } from "./metacacheSlice";
 
 export const getStarknet = createAsyncThunk("web3/loadStarknet",
-    async (getAuthorization: boolean) => {
+    async (getAuthorization: boolean, { dispatch, getState }) => {
         const { account } = await connectWallet(getAuthorization);
         console.log("Got starknet account: " + account)
+
+        const { starknet } = getState() as RootState;
+        dispatch(createMetacache(starknet.provider))
+
         return account
     }
 );

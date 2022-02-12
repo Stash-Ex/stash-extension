@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '../../store';
-import { getSiteCaches } from '../../web3/siteCachesSlice';
 
 import CreateCacheForm from '../../components/forms/CreateCacheForm';
 
@@ -16,7 +15,7 @@ const CacheCreations = () => {
   useEffect(() => {
     if (!loading && currentUrl) {
       // dispatch(getSiteCaches(currentUrl));
-      dispatch(getSiteCaches(currentUrl));
+      // dispatch(getSiteCaches(currentUrl));
     }
   }, [currentUrl, loading, dispatch])
 

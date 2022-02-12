@@ -1,4 +1,4 @@
-import { cachesAtLocation } from "../web3/lib/starknet/metacache.service";
+import { cachesAtLocation } from "../web3/starknet/metacache.service";
 import { number } from "starknet";
 
 
@@ -8,9 +8,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       var activeTab = tabs[0];
       chrome.action.getBadgeText({ tabId: activeTab.id }, (currentBadgeText) => {
-        const newBadgeText = request["data"].toString();
-        if (newBadgeText !== currentBadgeText) {
-          chrome.action.setBadgeText({ tabId: activeTab.id, text: request["data"].toString() });
+        const badgeText = request["data"]
+        if (badgeText !== currentBadgeText) {
+          chrome.action.setBadgeText({ tabId: activeTab.id, text: badgeText });
         }
       })
     });

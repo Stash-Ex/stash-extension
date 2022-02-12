@@ -10,17 +10,16 @@ import NavBar from './components/navbar/NavBar';
 import CacheCreations from './views/Create/CacheCreations';
 import { RootState } from './store';
 import { getStarknet } from './web3/starknetSlice';
-import WalletAddress from './components/ConnectedComponent';
 import ConnectedComponent from './components/ConnectedComponent';
 
 const App = () => {
-  const { account, loading } = useSelector((state: RootState) => state.starknet);
+  const { account } = useSelector((state: RootState) => state.starknet);
   const dispatch = useDispatch();
 
 
   useEffect(() => {
     dispatch(getCurrentUrl());
-    dispatch(getStarknet(false))
+    dispatch(getStarknet(false));
   }, [dispatch, account]);
 
 
@@ -35,7 +34,6 @@ const App = () => {
       </header>
       <main>
         <NavBar />
-
         <Switch>
           <Route exact path="/Claim" component={SiteCaches} />
           <Route exact path="/">

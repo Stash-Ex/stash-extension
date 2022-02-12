@@ -1,33 +1,36 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '../../store';
-import { getSiteCaches } from '../../web3/siteCachesSlice';
 
 import Cache from '../../components/cache/Cache';
+import { getNumCaches, loadCaches } from '../../web3/metacacheSlice';
 
 const SiteCaches = () => {
-  const { caches } = useSelector((state: RootState) => state.siteCaches);
-  const { currentUrl, loading } = useSelector((state: RootState) => state.currentUrl);
+  const { currentUrl } = useSelector((state: RootState) => state.currentUrl);
+  const { cacheCount, contract, caches } = useSelector((state: RootState) => state.metacache);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!loading && currentUrl) {
-      dispatch(getSiteCaches("1"));
+    if (currentUrl) {
+      dispatch(getNumCaches(currentUrl))
     }
-  }, [currentUrl, loading, dispatch])
+  }, [dispatch, currentUrl, contract])
 
   useEffect(() => {
-    chrome.runtime.sendMessage({ "message": "update_cache_count", "data": caches.length })
-  }, [caches])
+    if (cacheCount > 0 && currentUrl) {
+      dispatch(loadCaches({ location: currentUrl, pageSize: 5 }));
+    }
+  }, [dispatch, cacheCount, currentUrl])
 
   return (
     <div>
       <h1>Scavenging Page</h1>
       <h3>{currentUrl}</h3>
-      {caches.map((cache, index) => (
-        <Cache key={index} cache={cache} />
+      <p>Number of caches on page: {JSON.stringify(cacheCount)}</p>
+      {caches.map((data, index) => (
+        <Cache key={index} data={data} />
       ))}
     </div>
   )
