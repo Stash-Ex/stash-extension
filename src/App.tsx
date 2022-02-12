@@ -10,7 +10,8 @@ import NavBar from './components/navbar/NavBar';
 import CacheCreations from './views/Create/CacheCreations';
 import { RootState } from './store';
 import { getStarknet } from './web3/starknetSlice';
-import WalletAddress from './components/WalletAddress';
+import WalletAddress from './components/ConnectedComponent';
+import ConnectedComponent from './components/ConnectedComponent';
 
 const App = () => {
   const { account, loading } = useSelector((state: RootState) => state.starknet);
@@ -30,8 +31,7 @@ const App = () => {
           Welcome to <code style={{ color: 'black', backgroundColor: '#A9A9A9' }}>&lt;MetaCache/&gt;</code>.<br />
           The internet-wide scavenger hunt.
         </p>
-        <p>Address: <WalletAddress />
-        </p>
+        <p>Address: <ConnectedComponent children={<p>{account}</p>} /></p>
       </header>
       <main>
         <NavBar />

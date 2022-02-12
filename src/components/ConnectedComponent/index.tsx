@@ -3,14 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { getStarknet } from '../../web3/starknetSlice';
 import { RootState } from "../../store";
 
-const WalletAddress = () => {
+const ConnectedComponent = ({ children }) => {
 
-    const { account, loading } = useSelector((state: RootState) => state.starknet);
+    const { account } = useSelector((state: RootState) => state.starknet);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getStarknet(false))
-    }, [dispatch, account]);
 
     if (!account) {
         return (
@@ -24,7 +20,7 @@ const WalletAddress = () => {
             </div>
         );
     }
-    return <p>{account}</p>
+    return <React.Fragment>{children}</React.Fragment>;
 }
 
-export default WalletAddress
+export default ConnectedComponent

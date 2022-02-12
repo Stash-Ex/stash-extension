@@ -8,12 +8,8 @@ import { getSiteCaches } from '../../web3/siteCachesSlice';
 import Cache from '../../components/cache/Cache';
 
 const SiteCaches = () => {
-  const { caches } = useSelector((state: RootState) => {
-    return state.siteCaches
-  });
-  const { currentUrl, loading } = useSelector((state: RootState) => {
-    return state.currentUrl
-  });
+  const { caches } = useSelector((state: RootState) => state.siteCaches);
+  const { currentUrl, loading } = useSelector((state: RootState) => state.currentUrl);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,7 +20,7 @@ const SiteCaches = () => {
 
   useEffect(() => {
     chrome.runtime.sendMessage({ "message": "update_cache_count", "data": caches.length })
-  })
+  }, [caches])
 
   return (
     <div>
