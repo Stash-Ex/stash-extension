@@ -10,9 +10,9 @@ export function isLocalNetwork(hostname = window.location.hostname) {
 
 export const getCurrentURL = async (): Promise<string> => {
   if (isLocalNetwork()) {
-    return window.location.href;
+    return window.location.hostname;
   }
 
   let queryOptions = { active: true, currentWindow: true };
-  return Promise.resolve(window.location.href);
+  return Promise.resolve(window.location.hostname);
 }

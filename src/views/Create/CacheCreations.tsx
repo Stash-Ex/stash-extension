@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -15,9 +15,9 @@ const CacheCreations = () => {
   useEffect(() => {
     if (!loading && currentUrl) {
       // dispatch(getSiteCaches(currentUrl));
-      // dispatch(getSiteCaches(currentUrl));
     }
-  }, [currentUrl, loading, dispatch])
+  }, [currentUrl, loading, dispatch]);
+
 
   return (
     <div>

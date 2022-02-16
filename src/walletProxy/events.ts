@@ -2,7 +2,7 @@ const dispatchEventAndWait = (
     event: CustomEvent,
     responseName: string,
     callback: (responseEvent: CustomEvent) => any,
-    timeout: number
+    timeout: number = 30000
 ): Promise<any> => {
     return new Promise((resolve, reject) => {
         const id = setTimeout(() => reject("Event timed out"), timeout);
@@ -23,8 +23,14 @@ const handleStarknetChange = ({ detail }: CustomEvent) => {
     return detail
 }
 
-export const connectWallet = async (getAuthorization: boolean) => {
+export const connectWalletRequest = async (getAuthorization: boolean) => {
     const event = new CustomEvent('ARGENT_WALLET_REQ', { detail: { getAuthorization } });
-    const starknetWallet = await dispatchEventAndWait(event, 'ARGENT_WALLET_RES', handleStarknetChange, 30000);
+    const starknetWallet = await dispatchEventAndWait(event, 'ARGENT_WALLET_RES', handleStarknetChange);
     return starknetWallet;
+}
+
+export const invokeCreateCacheRequest = async (args: any) => {
+    const event = new CustomEvent('METACACHE_CREATE_CACHE_REQ', { detail: { ...args } })
+    const submitResponse = await dispatchEventAndWait(event, 'METACACHE_CREATE_CACHE_RES', handleStarknetChange);
+    return submitResponse;
 }

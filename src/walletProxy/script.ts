@@ -1,37 +1,61 @@
 import { getStarknet } from '@argent/get-starknet'
+import { createMetacacheContract, invokeCreateCache } from '../web3/starknet/metacache.service';
 
-let getStarknetAttempts = 0
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-// retry getStarknet in case this extension loads before argent-x extension
-const getStarknetWithRetry = async (getAuthorization = false) => {
-    try {
-        const starknet = getStarknet({ showModal: false });
-        //@ts-ignore
-        const isPreauthorized = await starknet.isPreauthorized()
+// retry 
+/**
+ * Attempts to getStarknet with retries (in case this extension loads before argent-x extension)
+ * 
+ * @param getAuthorization whether or not to show the staknet modal
+ * @param retries the number of attempts
+ * @param sleepFactor the number of milliseconds * attemptNumber
+ * @returns 
+ */
+const getStarknetWithRetry = async (getAuthorization = false, retries = 5, sleepFactor = 3000) => {
+    let attempts = 0
+    while (attempts++ < 5) {
+        try {
+            const starknet = getStarknet({ showModal: false });
+            //@ts-ignore
+            const isPreauthorized = await starknet.isPreauthorized()
 
-        let account = null;
-        if (getAuthorization || isPreauthorized) {
-            [account] = await starknet.enable();
-        }
+            let account = null;
+            if (getAuthorization || isPreauthorized) {
+                [account] = await starknet.enable();
+            }
 
-        console.log("Called injected script Event Listener")
-        console.log(JSON.stringify(starknet))
-
-        getStarknetAttempts = 0
-        document.dispatchEvent(new CustomEvent('ARGENT_WALLET_RES', {
-            detail: { account }
-        }));
-    } catch (error) {
-        if (getStarknetAttempts++ < 5) {
-            console.log(`Found expected error getting starknet${error}. Retry #${getStarknetAttempts}`)
-            setTimeout(getStarknetWithRetry, getStarknetAttempts * 3000)
+            return account;
+        } catch (error) {
+            console.log(error);
+            await sleep(attempts * 3000);
         }
     }
 }
 
+document.addEventListener('METACACHE_CREATE_CACHE_REQ', async ({ detail }: CustomEvent) => {
+    console.log("METACACHE_CREATE_CACHE_REQ");
+
+    const starknet = getStarknet({ showModal: true });
+    await starknet.enable();
+
+    if (starknet.signer) {
+        const contract = createMetacacheContract(starknet.signer);
+        const createCache = invokeCreateCache(contract);
+
+        const { location, token, amount, keys, hint } = detail;
+        const res = await createCache(location, token, amount, keys, hint);
+        console.log("SCRIPT:CREATE_CACHE:" + JSON.stringify(res));
+        document.dispatchEvent(new CustomEvent('METACACHE_CREATE_CACHE_RES', { detail: res }))
+    }
+})
+
 // Event listener
-document.addEventListener('ARGENT_WALLET_REQ', async function ({ detail }: CustomEvent) {
-    console.log("RECEIVED EVENT IN SCRIPT")
-    console.log(detail)
-    await getStarknetWithRetry(detail.getAuthorization)
+document.addEventListener('ARGENT_WALLET_REQ', async ({ detail }: CustomEvent) => {
+    console.log("ARGENT_WALLET_REQ: " + JSON.stringify(detail))
+
+    const account = await getStarknetWithRetry(detail.getAuthorization);
+    document.dispatchEvent(new CustomEvent('ARGENT_WALLET_RES', {
+        detail: { account }
+    }));
 });

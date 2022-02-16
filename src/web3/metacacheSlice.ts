@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Contract, Abi, number, uint256 } from "starknet";
-import { useSelector } from "react-redux";
+import { Contract, Abi, uint256 } from "starknet";
 
-import METACACHE from "./abi/MetaCache.json";
 import { RootState } from "../store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { cachesAtLocation, getCache } from "./starknet/metacache.service";
+import { callCachesAtLocation, callGetCache, createMetacacheContract } from "./starknet/metacache.service";
+import { invokeCreateCacheRequest } from "../walletProxy/events";
 
-const ADDRESS =
-    "0x01fe1800f9d08e18cb1c321e33461fbed6ccfa769fc6957d3d611ba86da17d43";
 
 export const getNumCaches = createAsyncThunk("metacache/getNumCaches",
     async (location: any, { getState }) => {
         const { metacache } = getState() as RootState;
-        const getCachesAtLocation = cachesAtLocation(metacache.contract);
+        const getCachesAtLocation = callCachesAtLocation(metacache.contract);
 
         //TODO: remove constant location
         const numCaches = await getCachesAtLocation("1");
@@ -30,13 +26,21 @@ export const loadCaches = createAsyncThunk("metacache/loadCaches",
     async (args: any, { getState }) => {
         const { location, pageSize } = args;
         const { metacache } = getState() as RootState;
-        const loadCache = getCache(metacache.contract)
+        const loadCache = callGetCache(metacache.contract)
+        // TODO: Load pageSize number of caches
         // const res = await loadCache(location, <pagesizeloopindex>)
         const res = await loadCache("1", "0");
         return res;
     }
 )
 
+export const createCache = createAsyncThunk("metacache/createCache",
+    async (args: any, { getState }) => {
+        const res = await invokeCreateCacheRequest(args);
+        console.log(res)
+        return res;
+    }
+)
 
 export interface CacheState {
     location: string;
@@ -72,7 +76,7 @@ export const metacacheSlice = createSlice({
     initialState,
     reducers: {
         createMetacache(state, action) {
-            state.contract = new Contract(METACACHE as Abi[], ADDRESS, action.payload)
+            state.contract = createMetacacheContract(action.payload);
         }
     },
     extraReducers: builder => {

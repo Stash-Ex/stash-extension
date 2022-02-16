@@ -20,7 +20,7 @@ const App = () => {
   useEffect(() => {
     dispatch(getCurrentUrl());
     dispatch(getStarknet(false));
-  }, [dispatch, account]);
+  }, [dispatch]);
 
 
   return (
