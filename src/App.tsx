@@ -8,12 +8,12 @@ import './App.css';
 import SiteCaches from './views/Discover/SiteCaches';
 import NavBar from './components/navbar/NavBar';
 import CacheCreations from './views/Create/CacheCreations';
-import { RootState } from './store';
-import { getStarknet } from './web3/starknetSlice';
+import { AppState } from './store';
+import { getStarknet } from './store/starknetSlice';
 import ConnectedComponent from './components/ConnectedComponent';
 
 const App = () => {
-  const { account } = useSelector((state: RootState) => state.starknet);
+  const { account } = useSelector((state: AppState) => state.starknet);
   const dispatch = useDispatch();
 
 

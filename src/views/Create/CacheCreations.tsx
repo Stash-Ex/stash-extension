@@ -2,12 +2,12 @@ import React, { useCallback } from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { RootState } from '../../store';
+import { AppState } from '../../store';
 
 import CreateCacheForm from '../../components/forms/CreateCacheForm';
 
 const CacheCreations = () => {
-  const { currentUrl, loading } = useSelector((state: RootState) => {
+  const { currentUrl, loading } = useSelector((state: AppState) => {
     return state.currentUrl
   });
   const dispatch = useDispatch();

@@ -2,14 +2,14 @@ import React, { useMemo } from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { RootState } from '../../store';
+import { AppState } from '../../store';
 
 import Cache from '../../components/cache/Cache';
-import { getNumCaches, loadCaches } from '../../web3/metacacheSlice';
+import { getNumCaches, loadCaches } from '../../store/metacacheSlice';
 
 const SiteCaches = () => {
-  const { currentUrl } = useSelector((state: RootState) => state.currentUrl);
-  const { cacheCount, contract, caches } = useSelector((state: RootState) => state.metacache);
+  const { currentUrl } = useSelector((state: AppState) => state.currentUrl);
+  const { cacheCount, contract, caches } = useSelector((state: AppState) => state.metacache);
   const dispatch = useDispatch();
 
   useEffect(() => {

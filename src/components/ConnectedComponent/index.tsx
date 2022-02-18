@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getStarknet } from '../../web3/starknetSlice';
-import { RootState } from "../../store";
+import { getStarknet } from '../../store/starknetSlice';
+import { AppState } from "../../store";
 
 const ConnectedComponent = ({ children }) => {
 
-    const { account } = useSelector((state: RootState) => state.starknet);
+    const { account } = useSelector((state: AppState) => state.starknet);
     const dispatch = useDispatch();
 
     if (!account) {

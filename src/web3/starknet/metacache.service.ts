@@ -35,7 +35,6 @@ export const callGetCache = (contract: Contract) => async (
     }
 }
 
-
 /**
  * Formats arguments and calls createCache contract function
  * `keys` are hashed prior to calling contract.

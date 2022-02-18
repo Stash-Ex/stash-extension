@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { uint256, ProviderInterface, defaultProvider } from "starknet";
-import { RootState } from "../store";
+import { AppState } from "../store";
 import { connectWalletRequest } from "../walletProxy/events";
 import { createMetacache } from "./metacacheSlice";
 
@@ -10,7 +10,7 @@ export const getStarknet = createAsyncThunk("web3/loadStarknet",
         console.log("Got starknet account: " + account)
 
         //TODO: Return starknet provider info from Argent and create here 
-        const { starknet } = getState() as RootState;
+        const { starknet } = getState() as AppState;
         dispatch(createMetacache(starknet.provider));
         return account
     }

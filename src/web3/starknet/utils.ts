@@ -1,6 +1,7 @@
-import { shortString, hash } from "starknet";
+import { shortString, hash, number } from "starknet";
 import { BigNumberish } from "starknet/dist/utils/number";
 
+export const strToFelt = (text: string) => number.toBN(shortString.encodeShortString(text)).toString()
 /**
  * Splits text into chunks `chunkSize` string.
  * 
