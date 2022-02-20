@@ -1,7 +1,25 @@
 import { shortString, hash, number } from "starknet";
 import { BigNumberish } from "starknet/dist/utils/number";
 
+import { encode } from "starknet"
+
+export const isValidAddress = (address: string): boolean =>
+    /^0x[0-9a-f]{1,64}$/.test(address)
+
+export const formatAddress = (address: string) =>
+    encode.addHexPrefix(encode.removeHexPrefix(address).padStart(64, "0"))
+
+export const truncateAddress = (fullAddress: string) => {
+    const address = formatAddress(fullAddress)
+
+    const hex = address.slice(0, 2)
+    const start = address.slice(2, 6)
+    const end = address.slice(-4)
+    return `${hex} ${start} ... ${end}`
+}
+
 export const strToFelt = (text: string) => number.toBN(shortString.encodeShortString(text)).toString()
+
 /**
  * Splits text into chunks `chunkSize` string.
  * 

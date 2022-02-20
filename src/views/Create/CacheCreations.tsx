@@ -5,12 +5,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
 
 import CreateCacheForm from '../../components/forms/CreateCacheForm';
+import { useAppDispatch } from '../../store/hooks';
 
 const CacheCreations = () => {
-  const { currentUrl, loading } = useSelector((state: AppState) => {
-    return state.currentUrl
-  });
-  const dispatch = useDispatch();
+  const { currentUrl, loading } = useSelector((state: AppState) => state.currentUrl);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!loading && currentUrl) {
@@ -21,11 +20,8 @@ const CacheCreations = () => {
 
   return (
     <div>
-      <h1>Your Caches on:</h1>
+      <h1>Create Caches on:</h1>
       <h3>{currentUrl}</h3>
-      <div>
-        <p>Your caches will go here...</p>
-      </div>
       <CreateCacheForm />
     </div>
   )

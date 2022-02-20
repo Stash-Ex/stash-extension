@@ -56,7 +56,7 @@ export interface CacheState {
 export interface MetacacheState {
     contract: Contract;
     cacheCount: number;
-    caches: Array<Cache>;
+    caches: Array<CacheState>;
     loading: boolean;
     unloadedCaches: number;
     error: object;
