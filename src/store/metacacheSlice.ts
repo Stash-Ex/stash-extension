@@ -1,4 +1,4 @@
-import { Contract, Abi, uint256 } from "starknet";
+import { Contract, shortString, uint256 } from "starknet";
 
 import { AppState } from "../store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -23,14 +23,26 @@ export const getNumCaches = createAsyncThunk("metacache/getNumCaches",
 );
 
 export const loadCaches = createAsyncThunk("metacache/loadCaches",
-    async (args: any, { getState }) => {
-        const { location, pageSize } = args;
+    async (location: any, { getState }) => {
         const { metacache } = getState() as AppState;
         const loadCache = callGetCache(metacache.contract)
-        // TODO: Load pageSize number of caches
-        // const res = await loadCache(location, <pagesizeloopindex>)
+
+        const caches = [];
+
         const res = await loadCache("1", "0");
-        return res;
+        caches.push(res);
+
+        let nextCache = metacache.cacheCount - metacache.caches.length - 1
+        for (let cachesLoaded = 0; cachesLoaded < 5 && nextCache >= 0; cachesLoaded++, nextCache--) {
+            try {
+                const res = await loadCache(shortString.encodeShortString(location), nextCache.toString());
+                caches.push(res);
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        return caches;
     }
 )
 
@@ -58,7 +70,6 @@ export interface MetacacheState {
     cacheCount: number;
     caches: Array<CacheState>;
     loading: boolean;
-    unloadedCaches: number;
     error: object;
 }
 
@@ -67,7 +78,6 @@ const initialState = {
     cacheCount: 0,
     caches: [],
     loading: false,
-    unloadedCaches: 0,
     error: null,
 } as MetacacheState;
 
@@ -83,7 +93,6 @@ export const metacacheSlice = createSlice({
         builder
             .addCase(getNumCaches.fulfilled, (state, action) => {
                 state.cacheCount = action.payload;
-                state.unloadedCaches = action.payload;
                 state.loading = false;
             })
             .addCase(getNumCaches.pending, (state) => {
@@ -94,7 +103,7 @@ export const metacacheSlice = createSlice({
                 state.error = action.error;
             })
             .addCase(loadCaches.fulfilled, (state, action) => {
-                state.caches = [action.payload];
+                state.caches = action.payload;
                 state.loading = false;
             })
             .addCase(loadCaches.pending, (state) => {

@@ -1,7 +1,6 @@
 import { number, uint256, Contract, shortString, ProviderInterface, Abi } from "starknet"
-import { BigNumber } from "ethers"
 import { BigNumberish } from "starknet/dist/utils/number"
-import { computeHashChain, makeChunks } from "./utils";
+import { computeHashChain } from "./utils";
 
 import METACACHE from "../abi/MetaCache.json";
 
@@ -22,6 +21,7 @@ export const callGetCache = (contract: Contract) => async (
     cacheId: string
 ): Promise<any> => {
     const res = await contract.call("getCache", { cacheLocation, cacheId })
+    console.log("got getCache: " + JSON.stringify(res))
     const { cache } = res as any;
     return {
         location: cacheLocation,

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { uint256, ProviderInterface, defaultProvider } from "starknet";
+import { ProviderInterface, defaultProvider } from "starknet";
 import { AppState } from "../store";
 import { connectWalletRequest } from "../walletProxy/events";
 import { createMetacache } from "./metacacheSlice";

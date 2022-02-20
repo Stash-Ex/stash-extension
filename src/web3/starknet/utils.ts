@@ -1,7 +1,6 @@
-import { shortString, hash, number, Provider } from "starknet";
+import { shortString, hash, number, Provider, encode } from "starknet";
 import { BigNumberish } from "starknet/dist/utils/number";
 
-import { encode } from "starknet"
 
 export const doesContractExist = async (address: string, provider: Provider) => {
     if (!isValidAddress(address)) return false;
@@ -22,7 +21,7 @@ export const truncateAddress = (fullAddress: string) => {
     const hex = address.slice(0, 2)
     const start = address.slice(2, 6)
     const end = address.slice(-4)
-    return `${hex} ${start} ... ${end}`
+    return `${hex}${start}...${end}`
 }
 
 export const strToFelt = (text: string) => number.toBN(shortString.encodeShortString(text)).toString()

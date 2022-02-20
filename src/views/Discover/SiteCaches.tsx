@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -19,10 +19,10 @@ const SiteCaches = () => {
   }, [dispatch, currentUrl, contract])
 
   useEffect(() => {
-    if (cacheCount > 0 && currentUrl) {
-      dispatch(loadCaches({ location: currentUrl, pageSize: 5 }));
+    if (cacheCount > 0 && caches.length === 0 && currentUrl) {
+      dispatch(loadCaches(currentUrl));
     }
-  }, [dispatch, cacheCount, currentUrl])
+  }, [dispatch, cacheCount, currentUrl, caches])
 
   return (
     <div>
