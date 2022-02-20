@@ -1,7 +1,14 @@
-import { shortString, hash, number } from "starknet";
+import { shortString, hash, number, Provider } from "starknet";
 import { BigNumberish } from "starknet/dist/utils/number";
 
 import { encode } from "starknet"
+
+export const doesContractExist = async (address: string, provider: Provider) => {
+    if (!isValidAddress(address)) return false;
+
+    const { bytecode } = await provider.getCode(address)
+    return bytecode.length > 0
+}
 
 export const isValidAddress = (address: string): boolean =>
     /^0x[0-9a-f]{1,64}$/.test(address)

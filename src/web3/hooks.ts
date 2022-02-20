@@ -2,7 +2,7 @@ import { BigNumberish } from "ethers"
 import { useEffect, useMemo, useState } from "react"
 import { useAppSelector } from "../store/hooks"
 import * as ERC20 from "./starknet/erc20.service"
-import { isValidAddress } from "./starknet/utils"
+import { doesContractExist } from "./starknet/utils"
 
 export interface Token {
     address: string;
@@ -16,9 +16,8 @@ export const useContract = (address: string) => {
     const [contract, setContract] = useState(undefined);
 
     useMemo(() => {
-        if (isValidAddress(address)) {
-            setContract(ERC20.createERC20Contract(address, provider))
-        }
+        doesContractExist(address, provider)
+            .then(res => res && setContract(ERC20.createERC20Contract(address, provider)))
     }, [address, provider]);
 
     return contract;

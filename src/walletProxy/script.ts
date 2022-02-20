@@ -17,6 +17,7 @@ const getStarknetWithRetry = async (getAuthorization = false, retries = 5, sleep
     while (attempts++ < 5) {
         try {
             const starknet = getStarknet({ showModal: false });
+
             //@ts-ignore
             const isPreauthorized = await starknet.isPreauthorized()
 
