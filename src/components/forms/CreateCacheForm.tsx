@@ -13,8 +13,8 @@ const CreateCacheForm = () => {
   const [tokenAddress, setTokenAddress] = useState("0x07394cbe418daa16e42b87ba67372d4ab4a5df0b05c6e554d158458ce245bc10");
   const [amount, setAmount] = useState(0);
 
-  const { currentUrl } = useAppSelector((state) => state.currentUrl);
-  const { connectedTo: metacacheAddress } = useAppSelector((state) => state.metacache.contract);
+  const { currentUrl } = useAppSelector(state => state.currentUrl);
+  const metacacheAddress = useAppSelector(state => state.metacache.contract.connectedTo);
   const { account } = useAppSelector(state => state.starknet)
 
   const token = useToken(tokenAddress);
@@ -27,6 +27,7 @@ const CreateCacheForm = () => {
     keys.splice(i, 1);
     setKeys([...keys]);
   }
+
   const handleKeyChange = useCallback((i: number, e: any) => {
     keys[i] = e.target.value;
     setKeys([...keys]);
@@ -42,7 +43,7 @@ const CreateCacheForm = () => {
 
   return (
     <div>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={e => e.preventDefault()}>
         <h5>Assets</h5>
         <label>
           Token Address: &#32;

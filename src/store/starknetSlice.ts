@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { AnyKindOfDictionary } from "lodash";
 import { ProviderInterface, defaultProvider } from "starknet";
 import { AppState } from "../store";
 import { connectWalletRequest } from "../walletProxy/events";
@@ -12,13 +13,36 @@ export const getStarknet = createAsyncThunk("web3/loadStarknet",
         //TODO: Return starknet provider info from Argent and create here 
         const { starknet } = getState() as AppState;
         dispatch(createMetacache(starknet.provider));
-        return account
+        dispatch(getLatestStarknetBlock("dummy_arg"))
+
+        // clear prior blockhash intervals, if any
+        if (starknet.blockHashRefreshId) {
+            clearInterval(starknet.blockHashRefreshId)
+        }
+
+        // refresh block every 5 seconds.
+        const intervalId = setInterval(() => dispatch(getLatestStarknetBlock("dummy_arg")), 5000);
+        return { account, intervalId }
     }
 );
+
+const getLatestStarknetBlock = createAsyncThunk("web3/getLatestStarknetBlock",
+    async (args: AnyKindOfDictionary, { dispatch, getState }) => {
+        const { starknet } = getState() as AppState;
+        console.log("Loading latest starknet block");
+
+        const { block_hash } = await starknet.provider.getBlock();
+        console.log("Latest starknet block: " + block_hash);
+
+        return block_hash;
+    }
+)
 
 export interface StarknetState {
     provider: ProviderInterface;
     account?: string;
+    blockHashRefreshId?: NodeJS.Timeout;
+    blockHash?: string;
     loading: boolean;
     error: object;
 }
@@ -36,7 +60,8 @@ export const starknetSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(getStarknet.fulfilled, (state, action) => {
-                state.account = action.payload;
+                state.account = action.payload.account;
+                state.blockHashRefreshId = action.payload.intervalId;
                 state.loading = false;
             })
             .addCase(getStarknet.pending, (state) => {
@@ -45,6 +70,9 @@ export const starknetSlice = createSlice({
             .addCase(getStarknet.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error;
+            })
+            .addCase(getLatestStarknetBlock.fulfilled, (state, action) => {
+                state.blockHash = action.payload;
             })
     }
 })

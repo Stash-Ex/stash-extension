@@ -12,7 +12,12 @@ export const getNumCaches = createAsyncThunk("metacache/getNumCaches",
         const getCachesAtLocation = callCachesAtLocation(metacache.contract);
 
         //TODO: remove constant location
-        const numCaches = await getCachesAtLocation("1");
+        let numCaches = await getCachesAtLocation(shortString.encodeShortString(location));
+
+        // populate dummy data
+        if (numCaches === 0) {
+            numCaches += await getCachesAtLocation("1");
+        }
 
         chrome.runtime.sendMessage({
             message: "update_cache_count", data: numCaches.toString()
@@ -28,10 +33,6 @@ export const loadCaches = createAsyncThunk("metacache/loadCaches",
         const loadCache = callGetCache(metacache.contract)
 
         const caches = [];
-
-        const res = await loadCache("1", "0");
-        caches.push(res);
-
         let nextCache = metacache.cacheCount - metacache.caches.length - 1
         for (let cachesLoaded = 0; cachesLoaded < 5 && nextCache >= 0; cachesLoaded++, nextCache--) {
             try {
@@ -40,6 +41,12 @@ export const loadCaches = createAsyncThunk("metacache/loadCaches",
             } catch (e) {
                 console.log(e)
             }
+        }
+
+        // populate dummy data
+        if (caches.length === 0) {
+            const res = await loadCache("1", "0");
+            caches.push(res);
         }
 
         return caches;
