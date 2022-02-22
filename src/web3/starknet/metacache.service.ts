@@ -3,6 +3,7 @@ import { BigNumberish } from "starknet/dist/utils/number"
 import { computeHashChain } from "./utils";
 
 import METACACHE from "../abi/MetaCache.json";
+import { CacheState } from "../../store/metacacheSlice";
 
 export const ADDRESS = "0x01fe1800f9d08e18cb1c321e33461fbed6ccfa769fc6957d3d611ba86da17d43";
 
@@ -11,25 +12,27 @@ export const createMetacacheContract = (provider: ProviderInterface) =>
 
 export const callCachesAtLocation = (
     contract: Contract
-) => async (cacheLocation: string): Promise<number> => {
-    const res = await contract.call("cachesAtLocation", { cacheLocation });
+) => async (location: string): Promise<number> => {
+    const locationFelt = shortString.encodeShortString(location);
+    const res = await contract.call("cachesAtLocation", { locationFelt });
     return number.toBN(res?.numCaches || "0x0").toNumber();
 }
 
 export const callGetCache = (contract: Contract) => async (
-    cacheLocation: string,
+    location: string,
     cacheId: string
-): Promise<any> => {
-    const res = await contract.call("getCache", { cacheLocation, cacheId })
+): Promise<CacheState> => {
+    const locationFelt = shortString.encodeShortString(location);
+    const res = await contract.call("getCache", { location: locationFelt, cacheId })
     console.log("got getCache: " + JSON.stringify(res))
     const { cache } = res as any;
     return {
-        location: cacheLocation,
+        location: location,
         id: cacheId,
         token: cache?.token,
-        amount: uint256.uint256ToBN(cache?.amount).toString(), //TODO: need to divide by token decimals!
+        amount: uint256.uint256ToBN(cache?.amount).toString(),
         key: cache?.key,
-        hint: cache?.hint,
+        hint: cache?.hint ? shortString.decodeShortString(cache.hint) : "No Hints!",
         owner: cache?.owner,
         claimed: number.toBN(cache?.claimed) > 0,
     }

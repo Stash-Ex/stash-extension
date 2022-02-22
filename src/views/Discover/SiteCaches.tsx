@@ -29,8 +29,8 @@ const SiteCaches = () => {
       <h1>Scavenging Page</h1>
       <h3>{currentUrl}</h3>
       <p>Number of caches on page: {JSON.stringify(cacheCount)}</p>
-      {caches.map((data, index) => (
-        <Cache key={index} data={data} />
+      {caches.map((cache, index) => (
+        <Cache key={index.toString()} cache={cache} />
       ))}
     </div>
   )

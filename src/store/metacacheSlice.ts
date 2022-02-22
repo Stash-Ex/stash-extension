@@ -1,4 +1,4 @@
-import { Contract, shortString, uint256 } from "starknet";
+import { Contract, uint256 } from "starknet";
 
 import { AppState } from "../store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -12,7 +12,7 @@ export const getNumCaches = createAsyncThunk("metacache/getNumCaches",
         const getCachesAtLocation = callCachesAtLocation(metacache.contract);
 
         //TODO: remove constant location
-        let numCaches = await getCachesAtLocation(shortString.encodeShortString(location));
+        let numCaches = await getCachesAtLocation(location);
 
         // populate dummy data
         if (numCaches === 0) {
@@ -36,7 +36,7 @@ export const loadCaches = createAsyncThunk("metacache/loadCaches",
         let nextCache = metacache.cacheCount - metacache.caches.length - 1
         for (let cachesLoaded = 0; cachesLoaded < 5 && nextCache >= 0; cachesLoaded++, nextCache--) {
             try {
-                const res = await loadCache(shortString.encodeShortString(location), nextCache.toString());
+                const res = await loadCache(location, nextCache.toString());
                 caches.push(res);
             } catch (e) {
                 console.log(e)
@@ -67,9 +67,9 @@ export interface CacheState {
     token: string;
     amount: uint256.Uint256;
     key: string;
-    hint: string
-    owner: string
-    claimed: string
+    hint: string;
+    owner: string;
+    claimed: boolean;
 }
 
 export interface MetacacheState {

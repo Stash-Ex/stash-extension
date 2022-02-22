@@ -19,7 +19,6 @@ export const useTokenContract = (address: string) => {
     const [contract, setContract] = useState(undefined);
 
     useEffect(() => {
-        console.log("Use token contract effect")
         doesContractExist(address, provider)
             .then(res => res && setContract(ERC20.createERC20Contract(address, provider)))
     }, [address, provider]);
@@ -36,7 +35,6 @@ export const useTokenInfo = (address: string): TokenInfo => {
 
     useEffect(() => {
         if (contract) {
-            console.log("Use token info effect")
             ERC20.name(contract).then(res => setName(res));
             ERC20.symbol(contract).then(res => setSymbol(res));
             ERC20.decimals(contract).then(res => setDecimals(res));

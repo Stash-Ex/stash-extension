@@ -2,18 +2,14 @@ import React, { useMemo } from "react"
 import CacheHint from "./CacheHint";
 
 import ClaimCacheForm from '../forms/ClaimCacheForm';
-import { number, shortString, uint256 } from "starknet";
+import { CacheState } from "../../store/metacacheSlice";
 
-const Cache = (data) => {
-
-  const claimCache = unlockKeys => {
-    console.log(`Claiming Cache: ${unlockKeys}`)
-  }
+const Cache = ({ cache }: { cache: CacheState }) => {
 
   return (
     <div className="cache">
       {/* <h3>Cache #{data.id}</h3> */}
-      <p style={{ wordBreak: "break-word" }}>{JSON.stringify(data)}</p>
+      <p style={{ wordBreak: "break-word" }}>cache data: {JSON.stringify(cache)}</p>
     </div>
   )
 }
