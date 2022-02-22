@@ -1,3 +1,6 @@
+import { AddTransactionResponse } from "starknet";
+
+// convert a DOM dispatch-event-and-wait-for-another-event-response into a promise
 const dispatchEventAndWait = (
     event: CustomEvent,
     responseName: string,
@@ -30,7 +33,13 @@ export const connectWalletRequest = async (getAuthorization: boolean) => {
 }
 
 export const invokeCreateCacheRequest = async (args: any) => {
-    const event = new CustomEvent('METACACHE_CREATE_CACHE_REQ', { detail: { ...args } })
+    const event = new CustomEvent('METACACHE_CREATE_CACHE_REQ', { detail: { ...args } });
     const submitResponse = await dispatchEventAndWait(event, 'METACACHE_CREATE_CACHE_RES', handleStarknetChange);
+    return submitResponse;
+}
+
+export const tokenInvokeRequest = async (tokenAddress: string, method: string, args: any): Promise<AddTransactionResponse> => {
+    const event = new CustomEvent('TOKEN_INVOKE_REQ', { detail: { tokenAddress, method, args } });
+    const submitResponse = await dispatchEventAndWait(event, 'TOKEN_INVOKE_RES', handleStarknetChange);
     return submitResponse;
 }

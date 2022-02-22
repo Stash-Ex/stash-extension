@@ -1,4 +1,5 @@
 import { getStarknet } from '@argent/get-starknet'
+import { createERC20Contract } from '../web3/starknet/erc20.service';
 import { createMetacacheContract, invokeCreateCache } from '../web3/starknet/metacache.service';
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -47,6 +48,22 @@ document.addEventListener('METACACHE_CREATE_CACHE_REQ', async ({ detail }: Custo
         const res = await createCache(location, token, amount, keys, hint);
         console.log("SCRIPT:CREATE_CACHE:" + JSON.stringify(res));
         document.dispatchEvent(new CustomEvent('METACACHE_CREATE_CACHE_RES', { detail: res }))
+    }
+})
+
+document.addEventListener("TOKEN_INVOKE_REQ", async ({ detail }: CustomEvent) => {
+    console.log("TOKEN_INVOKE_REQUEST");
+
+    const staknet = getStarknet({ showModal: true });
+    await staknet.enable();
+
+    if (staknet.signer) {
+        const { tokenAddress, method, args } = detail;
+        console.log(`Invoking token stuff: ${tokenAddress}, ${method}, ${JSON.stringify(args)}`)
+        const tokenContract = createERC20Contract(tokenAddress, staknet.signer);
+        const res = await tokenContract.invoke(method, args)
+        console.log("SCRIPT:TOKEN_INVOKE:" + JSON.stringify(res));
+        document.dispatchEvent(new CustomEvent('TOKEN_INVOKE_RES', { detail: res }))
     }
 })
 

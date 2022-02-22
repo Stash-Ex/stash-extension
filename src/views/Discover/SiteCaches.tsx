@@ -1,15 +1,15 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { AppState } from '../../store';
+import { useDispatch } from 'react-redux';
 
 import Cache from '../../components/cache/Cache';
 import { getNumCaches, loadCaches } from '../../store/metacacheSlice';
+import { useAppSelector } from '../../store/hooks';
 
 const SiteCaches = () => {
-  const { currentUrl } = useSelector((state: AppState) => state.currentUrl);
-  const { cacheCount, contract, caches } = useSelector((state: AppState) => state.metacache);
+  const { currentUrl } = useAppSelector(state => state.currentUrl);
+  const { cacheCount, contract, caches } = useAppSelector(state => state.metacache);
+  const blockNumber = useAppSelector(state => state.starknet.blockHash);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const SiteCaches = () => {
     if (cacheCount > 0 && caches.length === 0 && currentUrl) {
       dispatch(loadCaches(currentUrl));
     }
-  }, [dispatch, cacheCount, currentUrl, caches])
+  }, [dispatch, cacheCount, currentUrl, caches, blockNumber])
 
   return (
     <div>

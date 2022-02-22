@@ -1,4 +1,4 @@
-import { Contract, shortString, ProviderInterface, Abi } from "starknet"
+import { Contract, shortString, ProviderInterface, Abi, AddTransactionResponse } from "starknet"
 import { BigNumberish, toBN } from "starknet/dist/utils/number"
 import { bnToUint256, uint256ToBN } from "starknet/dist/utils/uint256";
 
@@ -38,10 +38,9 @@ export const allowance = async (contract: Contract, owner: string, spender: stri
     return uint256ToBN(res.remaining as any);
 }
 
-export const transfer = async (contract: Contract, recipient: string, amount: BigNumberish): Promise<boolean> => {
+export const transfer = async (contract: Contract, recipient: string, amount: BigNumberish): Promise<AddTransactionResponse> => {
     const { low, high } = bnToUint256(amount);
-    const res = await contract.call("transfer", { recipient, low, high });
-    return toBN(res.success).toNumber() > 0;
+    return await contract.invoke("transfer", { recipient, low, high });
 }
 
 export const transferFrom = async (
@@ -49,29 +48,22 @@ export const transferFrom = async (
     sender: string,
     recipient: string,
     amount: BigNumberish
-): Promise<any> => {
+): Promise<AddTransactionResponse> => {
     const { low, high } = bnToUint256(amount);
-    const res = await contract.call("transferFrom", { sender, recipient, low, high });
-    return toBN(res.success).toNumber() > 0;
+    return await contract.invoke("transferFrom", { sender, recipient, low, high });
 }
 
-export const approve = async (contract: Contract, spender: string, amount: BigNumberish): Promise<boolean> => {
+export const approve = async (contract: Contract, spender: string, amount: BigNumberish): Promise<AddTransactionResponse> => {
     const { low, high } = bnToUint256(amount);
-    const res = await contract.call("approve", { spender, low, high });
-    return toBN(res.success).toNumber() > 0;
+    return await contract.invoke("approve", { spender, low, high });
 }
 
-export const increaseAllowance = async (contract: Contract, spender: string, amount: BigNumberish): Promise<boolean> => {
+export const increaseAllowance = async (contract: Contract, spender: string, amount: BigNumberish): Promise<AddTransactionResponse> => {
     const { low, high } = bnToUint256(amount);
-    const res = await contract.call("increaseAllowance", { spender, low, high });
-    return toBN(res.success).toNumber() > 0;
+    return await contract.invoke("increaseAllowance", { spender, low, high });
 }
 
-export const decreaseAllowance = async (contract: Contract, spender: string, amount: BigNumberish): Promise<boolean> => {
+export const decreaseAllowance = async (contract: Contract, spender: string, amount: BigNumberish): Promise<AddTransactionResponse> => {
     const { low, high } = bnToUint256(amount);
-    const res = await contract.call("decreaseAllowance", { spender, low, high });
-    return toBN(res.success).toNumber() > 0;
+    return await contract.invoke("decreaseAllowance", { spender, low, high });
 }
-
-
-// { "code": "TRANSACTION_RECEIVED", "address": "0x01fe1800f9d08e18cb1c321e33461fbed6ccfa769fc6957d3d611ba86da17d43", "transaction_hash": "0x1fc41709ea977884265c88c3dfea75007e40e841b596ffbf09a34402f932b3e" }

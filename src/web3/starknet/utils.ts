@@ -10,7 +10,7 @@ export const doesContractExist = async (address: string, provider: Provider) => 
 }
 
 export const isValidAddress = (address: string): boolean =>
-    /^0x[0-9a-f]{1,64}$/.test(address)
+    address && /^0x[0-9a-f]{64}$/.test(address)
 
 export const formatAddress = (address: string) =>
     encode.addHexPrefix(encode.removeHexPrefix(address).padStart(64, "0"))

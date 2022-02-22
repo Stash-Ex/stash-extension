@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinusCircle, faLightbulb, faKey } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from "react-redux"
 import { createCache } from "../../store/metacacheSlice"
-import { useAllowance, useToken } from "../../web3/hooks"
+import { useAllowance, useTokenApprove, useTokenInfo } from "../../web3/hooks"
 import { useAppSelector } from "../../store/hooks"
 import ConnectedComponent from "../ConnectedComponent"
 
@@ -17,8 +17,9 @@ const CreateCacheForm = () => {
   const metacacheAddress = useAppSelector(state => state.metacache.contract.connectedTo);
   const { account } = useAppSelector(state => state.starknet)
 
-  const token = useToken(tokenAddress);
-  const allowance = useAllowance(token?.address, account, metacacheAddress);
+  const token = useTokenInfo(tokenAddress);
+  const allowance = useAllowance(token, account, metacacheAddress);
+  const { invokeTokenApprove } = useTokenApprove(token.address);
   const dispatch = useDispatch();
 
   const addNewKeyInput = () => setKeys([...keys, ""])
@@ -40,6 +41,11 @@ const CreateCacheForm = () => {
   const createCacheOnSubmit = useCallback((e) => {
     dispatch(createCache({ location: currentUrl, token: tokenAddress, amount, keys, hint }))
   }, [dispatch, currentUrl, tokenAddress, amount, hint, keys])
+
+  const approveTokenClick = e => {
+    invokeTokenApprove && invokeTokenApprove(token, metacacheAddress, amount)
+    console.log("Approving")
+  }
 
   return (
     <div>
@@ -104,7 +110,7 @@ const CreateCacheForm = () => {
         {allowance >= amount ?
           <button onClick={createCacheOnSubmit}>Create Cache</button>
           :
-          <button onClick={() => console.log("approving token")}>Approve Token</button>
+          <button onClick={approveTokenClick}>Approve Token</button>
         }
       </ConnectedComponent>
     </div>
