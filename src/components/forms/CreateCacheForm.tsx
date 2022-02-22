@@ -6,6 +6,8 @@ import { createCache } from "../../store/metacacheSlice"
 import { useAllowance, useTokenApprove, useTokenInfo } from "../../web3/hooks"
 import { useAppSelector } from "../../store/hooks"
 import ConnectedComponent from "../ConnectedComponent"
+import { toNativeTokenAmount } from "../../web3/starknet/utils"
+
 
 const CreateCacheForm = () => {
   const [keys, setKeys] = useState([""])
@@ -39,11 +41,18 @@ const CreateCacheForm = () => {
   }, [])
 
   const createCacheOnSubmit = useCallback((e) => {
-    dispatch(createCache({ location: currentUrl, token: tokenAddress, amount, keys, hint }))
-  }, [dispatch, currentUrl, tokenAddress, amount, hint, keys])
+    const args = {
+      location: currentUrl,
+      token: tokenAddress,
+      amount: toNativeTokenAmount(amount, token.decimals),
+      keys,
+      hint
+    }
+    dispatch(createCache(args))
+  }, [amount, token.decimals, dispatch, currentUrl, tokenAddress, keys, hint])
 
   const approveTokenClick = e => {
-    invokeTokenApprove && invokeTokenApprove(token, metacacheAddress, amount)
+    invokeTokenApprove && invokeTokenApprove(metacacheAddress, toNativeTokenAmount(amount, token?.decimals))
     console.log("Approving")
   }
 
@@ -107,10 +116,14 @@ const CreateCacheForm = () => {
         />
       </form>
       <ConnectedComponent>
-        {allowance >= amount ?
+        {amount > 0 && allowance >= amount ?
           <button onClick={createCacheOnSubmit}>Create Cache</button>
           :
-          <button onClick={approveTokenClick}>Approve Token</button>
+          <div>
+            <button onClick={approveTokenClick}>Approve Token</button>
+            <p>Need to approve spend by metacache contract.</p>
+            <p>Current approved amount: {allowance} {token.symbol}</p>
+          </div>
         }
       </ConnectedComponent>
     </div>

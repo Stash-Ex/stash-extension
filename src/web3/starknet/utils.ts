@@ -1,5 +1,5 @@
 import { shortString, hash, number, Provider, encode } from "starknet";
-import { BigNumberish } from "starknet/dist/utils/number";
+import { BigNumberish, toBN } from "starknet/dist/utils/number";
 
 
 export const doesContractExist = async (address: string, provider: Provider) => {
@@ -10,7 +10,7 @@ export const doesContractExist = async (address: string, provider: Provider) => 
 }
 
 export const isValidAddress = (address: string): boolean =>
-    address && /^0x[0-9a-f]{64}$/.test(address)
+    address && /^0x[0-9a-f]{1,64}$/.test(address)
 
 export const formatAddress = (address: string) =>
     encode.addHexPrefix(encode.removeHexPrefix(address).padStart(64, "0"))
@@ -25,6 +25,17 @@ export const truncateAddress = (fullAddress: string) => {
 }
 
 export const strToFelt = (text: string) => number.toBN(shortString.encodeShortString(text)).toString()
+
+export const toNativeTokenAmount = (amount: BigNumberish, decimals: BigNumberish) =>
+    toBN(amount).mul(toBN(10).pow(toBN(decimals))).toString()
+
+export const fromNativeTokenAmount = (amount: BigNumberish, decimals: BigNumberish) => {
+    try {
+        return toBN(amount).div(toBN(10).pow(toBN(decimals))).toString()
+    } catch (e) {
+        return amount
+    }
+}
 
 /**
  * Splits text into chunks `chunkSize` string.

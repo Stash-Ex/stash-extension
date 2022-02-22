@@ -29,10 +29,7 @@ export const getStarknet = createAsyncThunk("web3/loadStarknet",
 const getLatestStarknetBlock = createAsyncThunk("web3/getLatestStarknetBlock",
     async (args: AnyKindOfDictionary, { dispatch, getState }) => {
         const { starknet } = getState() as AppState;
-        console.log("Loading latest starknet block");
-
         const { block_hash } = await starknet.provider.getBlock();
-        console.log("Latest starknet block: " + block_hash);
 
         return block_hash;
     }

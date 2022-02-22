@@ -1,11 +1,11 @@
 import { BigNumberish } from "ethers"
 import { useEffect, useState } from "react"
-import { uint256 } from "starknet"
+import { Contract, uint256 } from "starknet"
 import { toBN } from "starknet/dist/utils/number"
 import { useAppSelector } from "../store/hooks"
 import { tokenInvokeRequest } from "../walletProxy/events"
 import * as ERC20 from "./starknet/erc20.service"
-import { doesContractExist } from "./starknet/utils"
+import { doesContractExist, fromNativeTokenAmount } from "./starknet/utils"
 
 export interface TokenInfo {
     address: string;
@@ -39,7 +39,7 @@ export const useTokenInfo = (address: string): TokenInfo => {
             ERC20.symbol(contract).then(res => setSymbol(res));
             ERC20.decimals(contract).then(res => setDecimals(res));
         }
-    }, [contract])
+    }, [address, contract])
 
     return { address, name, symbol, decimals }
 }
@@ -53,9 +53,11 @@ export const useAllowance = (tokenInfo: TokenInfo, owner: string, spender: strin
         if (contract) {
             ERC20.allowance(contract, owner, spender).then(res => {
                 try {
-                    const allowance = toBN(res).div(toBN(tokenInfo.decimals));
+                    console.log("got allowance: " + res)
+                    const allowance = fromNativeTokenAmount(res, tokenInfo.decimals);
                     setAllowance(allowance)
                 } catch (e) {
+                    console.log("Error usingAllowanceL " + e)
                     setAllowance(0);
                 }
             });
@@ -68,21 +70,16 @@ export const useAllowance = (tokenInfo: TokenInfo, owner: string, spender: strin
 export const useTokenApprove = (tokenAddress) => {
     const [addTransactionResponse, setAddTransactionResponse] = useState(undefined);
     const [invokeTokenApprove, setInvokeTokenApprove] = useState(undefined);
-    const contract = useTokenContract(tokenAddress);
+    const contract: Contract = useTokenContract(tokenAddress);
 
     useEffect(() => {
         if (contract) {
-            const invokeContract = (tokenInfo: TokenInfo, spender: string, amount: BigNumberish) => {
-                const normAmount = uint256.bnToUint256(toBN(amount).mul(toBN(tokenInfo.decimals)))
-                const args = { spender, low: normAmount.low, high: normAmount.high };
-                try {
-                    tokenInvokeRequest(tokenInfo.address, "approve", args).then(transaction => {
-                        console.log("Invoked Contract: " + JSON.stringify(transaction));
-                        setAddTransactionResponse(transaction)
-                    });
-                } catch (e) {
-                    console.log("Error invoking token approve: " + e)
-                }
+            const invokeContract = (spender: string, amount: BigNumberish) => {
+                const args = { spender, ...uint256.bnToUint256(toBN(amount)) };
+                tokenInvokeRequest(contract.connectedTo, "approve", args).then(transaction => {
+                    console.log("Invoked Contract: " + JSON.stringify(transaction));
+                    setAddTransactionResponse(transaction)
+                }).catch(e => console.log("Error invoking token approve: " + e))
             }
             setInvokeTokenApprove(() => invokeContract)
         }
