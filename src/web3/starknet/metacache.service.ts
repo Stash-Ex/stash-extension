@@ -81,7 +81,7 @@ export const invokeClaimCache = (contract: Contract) => async (
 ): Promise<any> => {
     const locationFelt = shortString.encodeShortString(location);
     const keysFelts = keys.map(key => shortString.encodeShortString(key));
-    const calldata = { location: locationFelt, id, keys_len: number.toBN(keys.length), keys: keysFelts }
+    const calldata = { location: locationFelt, id, keys: keysFelts }
     console.log("Invoking ClaimCache\nCalldata: " + JSON.stringify(calldata));
     const res = await contract.invoke("claimCache", calldata);
     console.log("Invoked ClaimCache\nResponse: " + JSON.stringify(res));

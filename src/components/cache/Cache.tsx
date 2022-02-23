@@ -22,10 +22,9 @@ const Cache = ({ cache }: { cache: CacheState }) => {
           />
         )}
       </p>
-      <p>Key: {cache.key}</p>
       <p>Hint: {cache.hint}</p>
       <p>Owner: <VoyagerLink.Contract contract={cache.owner} /></p>
-      <p>Status: {cache.claimed ? "Claimed" : "Unclaimed"}</p>
+      {cache.claimed ? "Claimed" : <ClaimCacheForm cacheInfo={cache} />}
     </div>
   )
 }

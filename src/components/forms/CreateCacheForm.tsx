@@ -122,7 +122,6 @@ const CreateCacheForm = () => {
           <div>
             <button onClick={approveTokenClick}>Approve Token</button>
             <p>Need to approve spend by metacache contract.</p>
-            <p>Current approved amount: {allowance} {token.symbol}</p>
           </div>
         }
       </ConnectedComponent>

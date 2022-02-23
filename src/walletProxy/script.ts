@@ -1,6 +1,6 @@
 import { getStarknet } from '@argent/get-starknet'
 import { createERC20Contract } from '../web3/starknet/erc20.service';
-import { createMetacacheContract, invokeCreateCache } from '../web3/starknet/metacache.service';
+import { createMetacacheContract, invokeClaimCache, invokeCreateCache } from '../web3/starknet/metacache.service';
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
@@ -48,6 +48,23 @@ document.addEventListener('METACACHE_CREATE_CACHE_REQ', async ({ detail }: Custo
         const res = await createCache(location, token, amount, keys, hint);
         console.log("SCRIPT:CREATE_CACHE:" + JSON.stringify(res));
         document.dispatchEvent(new CustomEvent('METACACHE_CREATE_CACHE_RES', { detail: res }))
+    }
+})
+
+document.addEventListener('METACACHE_CLAIM_CACHE_REQ', async ({ detail }: CustomEvent) => {
+    console.log("METACACHE_CLAIM_CACHE_REQ");
+
+    const starknet = getStarknet({ showModal: true });
+    await starknet.enable();
+
+    if (starknet.signer) {
+        const contract = createMetacacheContract(starknet.signer);
+        const createCache = invokeClaimCache(contract);
+
+        const { location, id, keys } = detail;
+        const res = await createCache(location, id, keys);
+        console.log("SCRIPT:CLAIM_CACHE:" + JSON.stringify(res));
+        document.dispatchEvent(new CustomEvent('METACACHE_CLAIM_CACHE_RES', { detail: res }))
     }
 })
 

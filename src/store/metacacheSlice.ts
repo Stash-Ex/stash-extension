@@ -3,7 +3,7 @@ import { Contract, uint256 } from "starknet";
 import { AppState } from "../store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { callCachesAtLocation, callGetCache, createMetacacheContract } from "../web3/starknet/metacache.service";
-import { invokeCreateCacheRequest } from "../walletProxy/events";
+import { invokeClaimCacheRequest, invokeCreateCacheRequest } from "../walletProxy/events";
 
 
 export const getNumCaches = createAsyncThunk("metacache/getNumCaches",
@@ -56,6 +56,14 @@ export const loadCaches = createAsyncThunk("metacache/loadCaches",
 export const createCache = createAsyncThunk("metacache/createCache",
     async (args: any) => {
         const res = await invokeCreateCacheRequest(args);
+        console.log(res)
+        return res;
+    }
+)
+
+export const claimCache = createAsyncThunk("metacache/claimCache",
+    async (args: any) => {
+        const res = await invokeClaimCacheRequest(args);
         console.log(res)
         return res;
     }

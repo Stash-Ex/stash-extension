@@ -38,6 +38,12 @@ export const invokeCreateCacheRequest = async (args: any) => {
     return submitResponse;
 }
 
+export const invokeClaimCacheRequest = async (args: any) => {
+    const event = new CustomEvent('METACACHE_CLAIM_CACHE_REQ', { detail: { ...args } });
+    const submitResponse = await dispatchEventAndWait(event, 'METACACHE_CLAIM_CACHE_RES', handleStarknetChange);
+    return submitResponse;
+}
+
 export const tokenInvokeRequest = async (tokenAddress: string, method: string, args: any): Promise<AddTransactionResponse> => {
     const event = new CustomEvent('TOKEN_INVOKE_REQ', { detail: { tokenAddress, method, args } });
     const submitResponse = await dispatchEventAndWait(event, 'TOKEN_INVOKE_RES', handleStarknetChange);
