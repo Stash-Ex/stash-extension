@@ -61,7 +61,7 @@ const CreateCacheForm = () => {
       <form onSubmit={e => e.preventDefault()}>
         <h5>Assets</h5>
         <label>
-          Token Address: &#32;
+          Token Address:
           <input
             type="text"
             id="tokenaddress"
@@ -81,13 +81,22 @@ const CreateCacheForm = () => {
             value={amount}
             onChange={e => setAmount(parseFloat(e.target.value) || 0)} /><br /><br />
         </label>
-        <h5>Keys</h5>
+        {amount > 0 && allowance < amount ?
+          <ConnectedComponent>
+            <button onClick={approveTokenClick}>Approve Token</button>
+            <p>Need to approve spend by metacache contract.</p>
+          </ConnectedComponent>
+          :
+          <></>
+        }
+        <h5>{"Keys "}
+          <FontAwesomeIcon
+            icon={faKey}
+            size="lg"
+          />
+        </h5>
         {keys.map((cacheKey, index) => (
           <div key={"Key" + index}>
-            <FontAwesomeIcon
-              icon={faKey}
-              size="lg"
-            />
             <input
               type="text"
               placeholder={`Key Part #${index + 1}`}
@@ -102,7 +111,7 @@ const CreateCacheForm = () => {
           </div>
         ))}
         <button type="button" onClick={addNewKeyInput}>Add Key</button>
-        <h5>Hint
+        <h5>{"Hint "}
           <FontAwesomeIcon
             icon={faLightbulb}
             size="lg"
@@ -115,15 +124,9 @@ const CreateCacheForm = () => {
           onChange={handleHintChange}
         />
       </form>
+      <br />
       <ConnectedComponent>
-        {amount > 0 && allowance >= amount ?
-          <button onClick={createCacheOnSubmit}>Create Cache</button>
-          :
-          <div>
-            <button onClick={approveTokenClick}>Approve Token</button>
-            <p>Need to approve spend by metacache contract.</p>
-          </div>
-        }
+        <button onClick={createCacheOnSubmit} disabled={amount === 0 || allowance < amount}>Create Cache</button>
       </ConnectedComponent>
     </div>
   )
