@@ -20,8 +20,7 @@
       "js": [
         "/static/js/main.js"
       ],
-      "run_at": "document_end",
-      "all_frames": true
+      "run_at": "document_end"
     }
   ],
   "host_permissions": [
