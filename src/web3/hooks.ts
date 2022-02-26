@@ -1,11 +1,11 @@
 import { BigNumberish } from "ethers"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Contract, uint256 } from "starknet"
 import { toBN } from "starknet/dist/utils/number"
 import { useAppSelector } from "../store/hooks"
 import { tokenInvokeRequest } from "../walletProxy/events"
 import * as ERC20 from "./starknet/erc20.service"
-import { doesContractExist, fromNativeTokenAmount } from "./starknet/utils"
+import { doesContractExist, fromNativeTokenAmount, isValidAddress } from "./starknet/utils"
 
 export interface TokenInfo {
     address: string;
@@ -18,7 +18,7 @@ export const useTokenContract = (address: string) => {
     const provider = useAppSelector(({ starknet: { provider } }) => provider)
     const [contract, setContract] = useState(undefined);
 
-    useEffect(() => {
+    useMemo(() => {
         doesContractExist(address, provider)
             .then(res => res && setContract(ERC20.createERC20Contract(address, provider)))
     }, [address, provider]);
@@ -50,14 +50,14 @@ export const useAllowance = (tokenInfo: TokenInfo, owner: string, spender: strin
     const blockHash = useAppSelector(state => state.starknet.blockHash);
 
     useEffect(() => {
-        if (contract) {
+        if (isValidAddress(owner) && isValidAddress(spender) && contract) {
             ERC20.allowance(contract, owner, spender).then(res => {
                 try {
                     console.log("got allowance: " + res)
                     const allowance = fromNativeTokenAmount(res, tokenInfo.decimals);
                     setAllowance(allowance)
                 } catch (e) {
-                    console.log("Error usingAllowanceL " + e)
+                    console.log("Error usingAllowance" + e)
                     setAllowance(0);
                 }
             });
