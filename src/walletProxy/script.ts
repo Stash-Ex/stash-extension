@@ -4,7 +4,7 @@ import { createMetacacheContract, invokeClaimCache, invokeCreateCache } from '..
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-// retry 
+
 /**
  * Attempts to getStarknet with retries (in case this extension loads before argent-x extension)
  * 
@@ -15,7 +15,7 @@ const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
  */
 const getStarknetWithRetry = async (getAuthorization = false, retries = 5, sleepFactor = 3000) => {
     let attempts = 0
-    while (attempts++ < 5) {
+    while (attempts++ < retries) {
         try {
             const starknet = getStarknet({ showModal: false });
             //@ts-ignore
@@ -29,7 +29,7 @@ const getStarknetWithRetry = async (getAuthorization = false, retries = 5, sleep
             return account;
         } catch (error) {
             console.log(error);
-            await sleep(attempts * 3000);
+            await sleep(attempts * sleepFactor);
         }
     }
 }
