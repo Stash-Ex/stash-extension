@@ -6,6 +6,15 @@ import Cache from '../../components/cache/Cache';
 import { getNumCaches, loadCaches } from '../../store/metacacheSlice';
 import { useAppSelector } from '../../store/hooks';
 
+const styles = {
+  card: {
+    backdropFilter: 'blur(6px) saturate(157%)',
+    backgroundColor: 'rgba(255, 255, 255, 0.88)',
+    borderRadius: 12,
+    border: '1px solid rgba(209, 213, 219, 0.3)',
+  }
+}
+
 const SiteCaches = () => {
   const { currentUrl } = useAppSelector(state => state.currentUrl);
   const { cacheCount, contract, caches } = useAppSelector(state => state.metacache);
@@ -29,7 +38,9 @@ const SiteCaches = () => {
       <h2>Caches found on: <span id="cacheLocation">{currentUrl}</span></h2>
       <p>Number of caches on page: {cacheCount}</p>
       {caches.map((cache, index) => (
-        <Cache key={index.toString()} cache={cache} />
+        <div style={styles.card}>
+          <Cache key={index.toString()} cache={cache} />
+        </div>
       ))}
     </div>
   )

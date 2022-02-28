@@ -8,6 +8,7 @@ import { useAppSelector } from "../../store/hooks"
 import ConnectedComponent from "../ConnectedComponent"
 import { toNativeTokenAmount } from "../../web3/starknet/utils"
 
+import style from "./index.module.css"
 
 const CreateCacheForm = () => {
   const [keys, setKeys] = useState([""])
@@ -31,14 +32,14 @@ const CreateCacheForm = () => {
     setKeys([...keys]);
   }
 
-  const handleKeyChange = useCallback((i: number, e: any) => {
+  const handleKeyChange = (i: number, e: any) => {
     keys[i] = e.target.value;
     setKeys([...keys]);
-  }, [keys]);
+  }
 
-  const handleHintChange = useCallback((e: any) => {
+  const handleHintChange = (e: any) => {
     setHint(e.target.value);
-  }, [])
+  }
 
   const createCacheOnSubmit = useCallback((e) => {
     const args = {
@@ -57,73 +58,71 @@ const CreateCacheForm = () => {
   }
 
   return (
-    <div>
-      <form onSubmit={e => e.preventDefault()}>
-        <h5>Assets</h5>
-        <label>
-          Token Address:
-          <input
-            type="text"
-            id="tokenaddress"
-            name="tokenaddress"
-            value={tokenAddress}
-            onChange={e => setTokenAddress(e.target.value)} /><br />
-        </label>
-        <p>Name: {token?.name || "Invalid Token"}</p>
-        <p>Symbol: {token?.symbol || "Invalid Token"}</p>
-        <br />
-        <label>
-          Token Amount: &#32;
-          <input
-            type="number"
-            id="amount"
-            name="amount"
-            value={amount}
-            onChange={e => setAmount(parseFloat(e.target.value) || 0)} /><br /><br />
-        </label>
-        {amount > 0 && allowance < amount ?
-          <ConnectedComponent>
-            <button onClick={approveTokenClick}>Approve Token</button>
-            <p>Need to approve spend by metacache contract.</p>
-          </ConnectedComponent>
-          :
-          <></>
-        }
-        <h5>{"Keys "}
-          <FontAwesomeIcon
-            icon={faKey}
-            size="lg"
-          />
-        </h5>
-        {keys.map((cacheKey, index) => (
-          <div key={"Key" + index}>
-            <input
-              type="text"
-              placeholder={`Key Part #${index + 1}`}
-              value={cacheKey}
-              onChange={e => handleKeyChange(index, e)}
-            />
-            <FontAwesomeIcon
-              icon={faMinusCircle}
-              onClick={() => deleteKey(index)}
-              size="lg"
-            />
-          </div>
-        ))}
-        <button type="button" onClick={addNewKeyInput}>Add Key</button>
-        <h5>{"Hint "}
-          <FontAwesomeIcon
-            icon={faLightbulb}
-            size="lg"
-          />
-        </h5>
+    <div className={style.container}>
+      <h5>Assets</h5>
+      <label>
+        Token Address:
         <input
           type="text"
-          placeholder={`Hint goes here`}
-          value={hint}
-          onChange={handleHintChange}
+          id="tokenaddress"
+          name="tokenaddress"
+          value={tokenAddress}
+          onChange={e => setTokenAddress(e.target.value)} /><br />
+      </label>
+      <p>Name: {token?.name || "Invalid Token"}</p>
+      <p>Symbol: {token?.symbol || "Invalid Token"}</p>
+      <br />
+      <label>
+        Token Amount: &#32;
+        <input
+          type="number"
+          id="amount"
+          name="amount"
+          value={amount}
+          onChange={e => setAmount(parseFloat(e.target.value) || 0)} /><br /><br />
+      </label>
+      {amount > 0 && allowance < amount ?
+        <ConnectedComponent>
+          <button onClick={approveTokenClick}>Approve Token</button>
+          <p>Need to approve spend by metacache contract.</p>
+        </ConnectedComponent>
+        :
+        <></>
+      }
+      <h5>{"Keys "}
+        <FontAwesomeIcon
+          icon={faKey}
+          size="lg"
         />
-      </form>
+      </h5>
+      {keys.map((cacheKey, index) => (
+        <div key={"Key" + index}>
+          <input
+            type="text"
+            placeholder={`Key Part #${index + 1}`}
+            value={cacheKey}
+            onChange={e => handleKeyChange(index, e)}
+          />
+          <FontAwesomeIcon
+            icon={faMinusCircle}
+            onClick={() => deleteKey(index)}
+            size="lg"
+          />
+        </div>
+      ))}
+      <button type="button" onClick={addNewKeyInput}>Add Key</button>
+      <h5>{"Hint "}
+        <FontAwesomeIcon
+          icon={faLightbulb}
+          size="lg"
+        />
+      </h5>
+      <input
+        type="text"
+        placeholder={`Hint goes here`}
+        value={hint}
+        onChange={handleHintChange}
+      />
       <br />
       <ConnectedComponent>
         <button onClick={createCacheOnSubmit} disabled={amount === 0 || allowance < amount}>Create Cache</button>
