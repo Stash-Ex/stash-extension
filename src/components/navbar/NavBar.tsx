@@ -9,7 +9,7 @@ const NavBar = ({ account }) => {
     <div>
       <header className="App-header">
         <p>
-          Welcome to <code style={{ color: 'black', backgroundColor: '#A9A9A9' }}>&lt;MetaCache/&gt;</code>.<br />
+          Welcome to <code className='text-red-500'>&lt;MetaCache/&gt;</code><br />
           The internet-wide scavenger hunt.
         </p>
         <p>Address: <ConnectedComponent children={<span>{account && truncateAddress(account)}</span>} /></p>
