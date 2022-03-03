@@ -23,6 +23,14 @@ const App = () => {
 
   return (
     <div className="text-center">
+      <div className='flex flex-col justify-center h-36 bg-gray-700 text-center text-white'>
+        <p className='text-xl'>
+          Welcome to <code className='text-red-500 font-medium'>Stash</code>
+        </p>
+        <p className='text-sm'>
+          Crypto discoveries await
+        </p>
+      </div>
       <NavBar account={account} />
       <main>
         <Switch>

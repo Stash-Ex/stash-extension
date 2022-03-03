@@ -13,14 +13,6 @@ const NavBar = ({ account }) => {
 
   return (
     <div>
-      <div className='flex flex-col justify-center h-36 bg-gray-700 text-center text-white'>
-        <p className='text-xl'>
-          Welcome to <code className='text-red-500 font-medium'>Stash</code>
-        </p>
-        <p className='text-sm'>
-          Crypto discoveries await
-        </p>
-      </div>
       <div className='flex items-center justify-between h-14'>
         <div className='flex-1 flex items-center justify-start pl-2 h-3/5'>
           {navLinks.map(nav => (
