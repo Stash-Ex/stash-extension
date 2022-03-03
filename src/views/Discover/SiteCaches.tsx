@@ -26,8 +26,7 @@ const SiteCaches = () => {
 
   return (
     <div>
-      <h2>Caches found on: <span id="cacheLocation">{currentUrl}</span></h2>
-      <p>Number of caches on page: {cacheCount}</p>
+      <p className='text-lg'><span className='text-red-500'>{cacheCount}</span> caches on <span className='font-bold'>{currentUrl}</span></p>
       {caches.map((cache, index) => (
         <div className='py-8 px-8 max-w-sm mx-auto bg-red rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6'>
           <Cache key={index.toString()} cache={cache} />
