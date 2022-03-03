@@ -1,5 +1,8 @@
 import React from "react";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
+
 const shortenLinkText = (text: string) => (text.length > 13 ? `${text.slice(0, 6)}...${text.slice(-4)}` : text)
 
 interface LinkProps {
@@ -11,6 +14,7 @@ function Link({ href, children }: LinkProps) {
   return (
     <a className='text-purple-500 p-1 hover:text-purple-800' href={href} target="_blank" rel="noreferrer">
       {children}
+      <FontAwesomeIcon icon={faExternalLinkAlt} size="xs" transform={{ size: 10, x: -1, y: -4 }} />
     </a>
   );
 }
