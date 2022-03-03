@@ -28,6 +28,7 @@ const NavBar = ({ account }) => {
               className={`text-sm font-medium flex flex-1 justify-center self-stretch items-center rounded-md border-b-2 border-transparent ${nav.name === currentNavLink ? "border-red-500" : "hover:border-red-500"}`}
               to={nav.href}
               onClick={() => setCurrentNavLink(nav.name)}
+              key={nav.name}
             >
               {nav.name}
             </Link>

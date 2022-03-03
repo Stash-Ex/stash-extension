@@ -14,20 +14,18 @@ import { store } from './store';
 import { config, dom } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 
-
-// insert regular css in iframe to keep separate from page css.
-const getCss = () => {
+const getChromeOrLocalFile = (filePath: string) => {
   try {
-    return chrome.runtime.getURL("/static/css/main.css")
+    return chrome.runtime.getURL(filePath);
   } catch (e) {
-    console.log(`Exception: ${e}`)
-    return "http://localhost:3000/static/css/main.css"
+    return 'http://localhost:3000' + filePath
   }
 }
 
+
 const AppFrame = () => {
   return (
-    <Frame head={[<link type="text/css" rel="stylesheet" href={getCss()} ></link>, <style>${dom.css()}</style>]}>
+    <Frame head={[<link type="text/css" rel="stylesheet" href={getChromeOrLocalFile("/static/css/main.css")} ></link>, <style>${dom.css()}</style>]}>
       <FrameContextConsumer>
         {
           // Callback is invoked with iframe's window and document instances
@@ -61,7 +59,7 @@ try {
   );
 } catch (e) {
   console.log(`Exception: ${e}`)
-  app.style.display = "block";
+  toggle();
 }
 
 function toggle() {
@@ -74,7 +72,7 @@ function toggle() {
 
 // attach walletproxy for listener setup
 var s = document.createElement('script');
-s.src = chrome.runtime.getURL('/static/js/walletProxy.js');
+s.src = getChromeOrLocalFile('/static/js/walletProxy.js');
 s.onload = function () {
   //@ts-ignore
   this.remove();

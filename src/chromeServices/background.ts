@@ -1,9 +1,5 @@
-import { callCachesAtLocation } from "../web3/starknet/metacache.service";
-import { number } from "starknet";
-
-
 // main handler for messages received from content script 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome?.runtime?.onMessage?.addListener((request, sender, sendResponse) => {
   if (request["message"] === "update_cache_count") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       var activeTab = tabs[0];
@@ -18,7 +14,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 // Used to toggle the content script on the page
-chrome.action.onClicked.addListener(async (tab) => {
+chrome?.action?.onClicked?.addListener(async (tab) => {
   try {
     // Send a message to the active tab
     chrome.tabs.query({ active: true, currentWindow: true },
@@ -52,3 +48,5 @@ chrome.action.onClicked.addListener(async (tab) => {
 //     }
 //   }
 // });
+
+export { };
