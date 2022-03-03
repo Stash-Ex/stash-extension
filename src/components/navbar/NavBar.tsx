@@ -13,17 +13,19 @@ const NavBar = ({ account }) => {
 
   return (
     <div>
-      <div className='flex items-center justify-center h-36 bg-gray-700 text-white'>
-        <p>
-          Welcome to <code className='text-red-500 font-medium'>Stash</code><br />
-          The internet-wide scavenger hunt.
+      <div className='flex flex-col justify-center h-36 bg-gray-700 text-white'>
+        <p className='text-xl'>
+          Welcome to <code className='text-red-500 font-medium'>Stash</code>
+        </p>
+        <p className='text-sm'>
+          Your crypto discoveries await
         </p>
       </div>
-      <div className='flex items-center justify-between h-14 bg-gray-800 text-white'>
-        <div className='flex-1 flex items-center justify-start pl-2'>
+      <div className='flex items-center justify-between h-14'>
+        <div className='flex-1 flex items-center justify-start pl-2 h-3/5'>
           {navLinks.map(nav => (
             <Link
-              className={`flex items-center justify-center pl-2 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-300 hover:text-black ${nav.name === currentNavLink ? "bg-purple-500 text-black" : ""}`}
+              className={`text-sm font-medium flex flex-1 justify-center self-stretch items-center rounded-md border-b-2 border-transparent ${nav.name === currentNavLink ? "border-red-500" : "hover:border-red-500"}`}
               to={nav.href}
               onClick={() => setCurrentNavLink(nav.name)}
             >
@@ -32,7 +34,7 @@ const NavBar = ({ account }) => {
           ))}
         </div>
         <div className='right-0 flex flex-1 items-center justify-end pr-2'>
-          <ConnectedComponent children={<p>Wallet: <span>{account && truncateAddress(account)}</span></p>} />
+          <ConnectedComponent children={<p className='text-sm'>Wallet: <span>{account && truncateAddress(account)}</span></p>} />
         </div>
       </div>
       <hr />
