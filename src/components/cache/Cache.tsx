@@ -5,14 +5,13 @@ import { CacheState } from "../../store/metacacheSlice";
 import { useTokenInfo } from "../../web3/hooks";
 import { VoyagerLink } from "../VoyagerLink";
 
-import './Cache.css'
 import { fromNativeTokenAmount } from "../../web3/starknet/utils";
 
 const Cache = ({ cache }: { cache: CacheState }) => {
   const { decimals, address, symbol } = useTokenInfo(cache.token);
 
   return (
-    <div className="cache">
+    <div className="flex flex-col">
       <h3>Cache #{cache.id}</h3>
       <p>Prize: {decimals && fromNativeTokenAmount(cache.amount, decimals)} {
         address && symbol && (

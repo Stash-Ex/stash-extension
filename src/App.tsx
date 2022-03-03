@@ -32,7 +32,7 @@ const App = () => {
         </p>
       </div>
       <NavBar account={account} />
-      <main>
+      <main className='py-2 px-2'>
         <Switch>
           <Route exact path="/Claim" component={SiteCaches} />
           <Route exact path="/">

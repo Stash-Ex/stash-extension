@@ -1,7 +1,5 @@
 import React from "react";
 
-import style from "./index.module.css";
-
 const shortenLinkText = (text: string) => (text.length > 13 ? `${text.slice(0, 6)}...${text.slice(-4)}` : text)
 
 interface LinkProps {
@@ -11,7 +9,7 @@ interface LinkProps {
 
 function Link({ href, children }: LinkProps) {
   return (
-    <a className={style.link} href={href} target="_blank" rel="noreferrer">
+    <a className='text-purple-500 p-1 hover:text-purple-800' href={href} target="_blank" rel="noreferrer">
       {children}
     </a>
   );
