@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { getCurrentUrl } from './chromeServices/currentUrlSlice';
 
-import './App.css';
 import SiteCaches from './views/Discover/SiteCaches';
 import NavBar from './components/navbar/NavBar';
 import CacheCreations from './views/Create/CacheCreations';
@@ -23,7 +22,7 @@ const App = () => {
 
 
   return (
-    <div className="App">
+    <div className="text-center">
       <NavBar account={account} />
       <main>
         <Switch>
