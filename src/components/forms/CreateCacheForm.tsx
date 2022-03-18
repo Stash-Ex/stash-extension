@@ -8,11 +8,9 @@ import { useAppSelector } from "../../store/hooks"
 import ConnectedComponent from "../ConnectedComponent"
 import { toNativeTokenAmount } from "../../web3/starknet/utils"
 
-import style from "./index.module.css"
-
 const CreateCacheForm = () => {
   const [keys, setKeys] = useState([""])
-  const [hint, setHint] = useState([""])
+  const [hint, setHint] = useState("")
   const [tokenAddress, setTokenAddress] = useState("0x07394cbe418daa16e42b87ba67372d4ab4a5df0b05c6e554d158458ce245bc10");
   const [amount, setAmount] = useState(0);
 
@@ -58,37 +56,26 @@ const CreateCacheForm = () => {
   }
 
   return (
-    <div className={style.container}>
+    <form onSubmit={e => e.preventDefault()}>
       <h5>Assets</h5>
-      <label>
-        Token Address:
-        <input
-          type="text"
-          id="tokenaddress"
-          name="tokenaddress"
-          value={tokenAddress}
-          onChange={e => setTokenAddress(e.target.value)} /><br />
-      </label>
+      <label className="text" htmlFor="tokenaddress" >Token Address:</label>
+      <input
+        type="text"
+        id="tokenaddress"
+        name="tokenaddress"
+        value={tokenAddress}
+        onChange={e => setTokenAddress(e.target.value)} /><br />
       <p>Name: {token?.name || "Invalid Token"}</p>
       <p>Symbol: {token?.symbol || "Invalid Token"}</p>
       <br />
-      <label>
-        Token Amount: &#32;
-        <input
-          type="number"
-          id="amount"
-          name="amount"
-          value={amount}
-          onChange={e => setAmount(parseFloat(e.target.value) || 0)} /><br /><br />
-      </label>
-      {amount > 0 && allowance < amount ?
-        <ConnectedComponent>
-          <button onClick={approveTokenClick}>Approve Token</button>
-          <p>Need to approve spend by metacache contract.</p>
-        </ConnectedComponent>
-        :
-        <></>
-      }
+      <label>Token Amount: &#32;</label>
+      <input
+        id="amount"
+        name="amount"
+        type="number"
+        min="0"
+        value={amount}
+        onChange={e => setAmount(parseFloat(e.target.value) || 0)} /><br /><br />
       <h5>{"Keys "}
         <FontAwesomeIcon
           icon={faKey}
@@ -117,17 +104,21 @@ const CreateCacheForm = () => {
           size="lg"
         />
       </h5>
-      <input
-        type="text"
+      <textarea
+        className="p-1 w-4/5"
         placeholder={`Hint goes here`}
         value={hint}
         onChange={handleHintChange}
       />
       <br />
       <ConnectedComponent>
-        <button onClick={createCacheOnSubmit} disabled={amount === 0 || allowance < amount}>Create Cache</button>
+        <button
+          className="px-4 py-1 text-sm font-semibold rounded-full border border-purple-200 text-white bg-purple-600 hover:bg-purple-400 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
+          onClick={amount > 0 && allowance < amount ? approveTokenClick : createCacheOnSubmit}>
+          {amount > 0 && allowance < amount ? "Approve Token" : "Create Stash"}
+        </button>
       </ConnectedComponent>
-    </div>
+    </form>
   )
 }
 export default CreateCacheForm;

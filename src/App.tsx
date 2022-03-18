@@ -28,7 +28,7 @@ const App = () => {
           Welcome to <code className='text-red-500 font-medium'>Stash</code>
         </p>
         <p className='text-sm'>
-          Crypto discoveries await
+          A metaverse thing
         </p>
       </div>
       <NavBar account={account} />

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { truncateAddress } from '../../web3/starknet/utils';
 import ConnectedComponent from '../ConnectedComponent';
+import { VoyagerLink } from '../VoyagerLink';
 
 const navLinks = [
   { name: 'Discover', href: "/Claim" },
@@ -27,7 +28,7 @@ const NavBar = ({ account }) => {
           ))}
         </div>
         <div className='right-0 flex flex-1 items-center justify-end pr-2'>
-          <ConnectedComponent children={<p className='text-sm'>Wallet: <span>{account && truncateAddress(account)}</span></p>} />
+          <ConnectedComponent children={<p className='text-sm'>Wallet: <VoyagerLink.Contract contract={account} /></p>} />
         </div>
       </div>
       <hr />
