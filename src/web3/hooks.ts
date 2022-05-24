@@ -76,7 +76,8 @@ export const useTokenApprove = (tokenAddress) => {
         if (contract) {
             const invokeContract = (spender: string, amount: BigNumberish) => {
                 const args = { spender, ...uint256.bnToUint256(toBN(amount)) };
-                tokenInvokeRequest(contract.connectedTo, "approve", args).then(transaction => {
+                console.log("Invoking contract: ", args)
+                tokenInvokeRequest(contract.address, "approve", args).then(transaction => {
                     console.log("Invoked Contract: " + JSON.stringify(transaction));
                     setAddTransactionResponse(transaction)
                 }).catch(e => console.log("Error invoking token approve: " + e))

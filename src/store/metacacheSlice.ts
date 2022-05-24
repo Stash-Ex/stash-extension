@@ -23,6 +23,7 @@ export const getNumCaches = createAsyncThunk("metacache/getNumCaches",
             message: "update_cache_count", data: numCaches.toString()
         });
 
+        console.log("returning getNumCaches: ", numCaches)
         return numCaches
     }
 );
@@ -37,6 +38,7 @@ export const loadCaches = createAsyncThunk("metacache/loadCaches",
         for (let cachesLoaded = 0; cachesLoaded < 5 && nextCache >= 0; cachesLoaded++, nextCache--) {
             try {
                 const res = await loadCache(location, nextCache.toString());
+                console.log("Got cache: ", JSON.stringify(res))
                 caches.push(res);
             } catch (e) {
                 console.log(e)
@@ -49,6 +51,7 @@ export const loadCaches = createAsyncThunk("metacache/loadCaches",
             caches.push(res);
         }
 
+        console.log("Returning loadCaches: ", caches.length)
         return caches;
     }
 )

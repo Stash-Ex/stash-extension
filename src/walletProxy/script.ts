@@ -1,4 +1,4 @@
-import { getStarknet } from '@argent/get-starknet'
+import { connect } from '@argent/get-starknet'
 import { createERC20Contract } from '../web3/starknet/erc20.service';
 import { createMetacacheContract, invokeClaimCache, invokeCreateCache } from '../web3/starknet/metacache.service';
 
@@ -17,18 +17,20 @@ const getStarknetWithRetry = async (getAuthorization = false, retries = 5, sleep
     let attempts = 0
     while (attempts++ < retries) {
         try {
-            const starknet = getStarknet({ showModal: false });
-            //@ts-ignore
-            const isPreauthorized = await starknet.isPreauthorized()
+            const starknet = await connect({ showList: getAuthorization });
+            await starknet.enable();
 
-            let account = null;
-            if (getAuthorization || isPreauthorized) {
-                [account] = await starknet.enable();
+            console.log("Starknet: ", starknet);
+
+            if (starknet.isConnected) {
+                console.log("connected")
+                return starknet.account.address;
+            } else {
+                console.log("not connected")
+                return ""
             }
-
-            return account;
         } catch (error) {
-            console.log(error);
+            console.log("Error #" + attempts + " " + error);
             await sleep(attempts * sleepFactor);
         }
     }
@@ -37,11 +39,11 @@ const getStarknetWithRetry = async (getAuthorization = false, retries = 5, sleep
 document.addEventListener('METACACHE_CREATE_CACHE_REQ', async ({ detail }: CustomEvent) => {
     console.log("METACACHE_CREATE_CACHE_REQ");
 
-    const starknet = getStarknet({ showModal: true });
+    const starknet = await connect({ showList: true });
     await starknet.enable();
 
-    if (starknet.signer) {
-        const contract = createMetacacheContract(starknet.signer);
+    if (starknet.isConnected) {
+        const contract = createMetacacheContract(starknet.account);
         const createCache = invokeCreateCache(contract);
 
         const { location, token, amount, keys, hint } = detail;
@@ -54,11 +56,11 @@ document.addEventListener('METACACHE_CREATE_CACHE_REQ', async ({ detail }: Custo
 document.addEventListener('METACACHE_CLAIM_CACHE_REQ', async ({ detail }: CustomEvent) => {
     console.log("METACACHE_CLAIM_CACHE_REQ");
 
-    const starknet = getStarknet({ showModal: true });
+    const starknet = await connect({ showList: true });
     await starknet.enable();
 
-    if (starknet.signer) {
-        const contract = createMetacacheContract(starknet.signer);
+    if (starknet.isConnected) {
+        const contract = createMetacacheContract(starknet.account);
         const createCache = invokeClaimCache(contract);
 
         const { location, id, keys } = detail;
@@ -71,13 +73,13 @@ document.addEventListener('METACACHE_CLAIM_CACHE_REQ', async ({ detail }: Custom
 document.addEventListener("TOKEN_INVOKE_REQ", async ({ detail }: CustomEvent) => {
     console.log("TOKEN_INVOKE_REQUEST");
 
-    const staknet = getStarknet({ showModal: true });
-    await staknet.enable();
+    const starknet = await connect({ showList: true });
+    await starknet.enable();
 
-    if (staknet.signer) {
+    if (starknet.isConnected) {
         const { tokenAddress, method, args } = detail;
         console.log(`Invoking token stuff: ${tokenAddress}, ${method}, ${JSON.stringify(args)}`)
-        const tokenContract = createERC20Contract(tokenAddress, staknet.signer);
+        const tokenContract = createERC20Contract(tokenAddress, starknet.account);
         const res = await tokenContract.invoke(method, args)
         console.log("SCRIPT:TOKEN_INVOKE:" + JSON.stringify(res));
         document.dispatchEvent(new CustomEvent('TOKEN_INVOKE_RES', { detail: res }))

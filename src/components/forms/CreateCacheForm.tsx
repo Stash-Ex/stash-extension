@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMinusCircle, faLightbulb, faKey } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from "react-redux"
 import { createCache } from "../../store/metacacheSlice"
 import { useAllowance, useTokenApprove, useTokenInfo } from "../../web3/hooks"
@@ -17,7 +16,7 @@ const CreateCacheForm = () => {
   const [isAssetSelectionModelOpen, setIsAssetSelectionModelOpen] = useState(false)
 
   const { currentUrl } = useAppSelector(state => state.currentUrl);
-  const metacacheAddress = useAppSelector(state => state.metacache.contract.connectedTo);
+  const metacacheAddress = useAppSelector(state => state.metacache.contract.address);
   const { account } = useAppSelector(state => state.starknet)
 
   const token = useTokenInfo(tokenAddress);
@@ -92,7 +91,7 @@ const CreateCacheForm = () => {
         onChange={e => setAmount(parseFloat(e.target.value) || 0)} /><br /><br />
       <h5>{"Keys "}
         <FontAwesomeIcon
-          icon={faKey}
+          icon={"key"}
           size="lg"
         />
       </h5>
@@ -105,7 +104,7 @@ const CreateCacheForm = () => {
             onChange={e => handleKeyChange(index, e)}
           />
           <FontAwesomeIcon
-            icon={faMinusCircle}
+            icon={"minus-circle"}
             onClick={() => deleteKey(index)}
             size="lg"
           />
@@ -114,7 +113,7 @@ const CreateCacheForm = () => {
       <button type="button" onClick={addNewKeyInput}>Add Key</button>
       <h5>{"Hint "}
         <FontAwesomeIcon
-          icon={faLightbulb}
+          icon={"lightbulb-exclamation-on"}
           size="lg"
         />
       </h5>

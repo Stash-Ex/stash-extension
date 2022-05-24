@@ -32,7 +32,7 @@ const ClaimCacheForm = ({ cacheInfo }: { cacheInfo: CacheState }) => {
         {cacheKeys.map((cacheKey, index) => (
           <div key={"Key" + index}>
             <FontAwesomeIcon
-              icon={faKey}
+              icon={"key"}
               size="lg"
             />
             <input
@@ -42,7 +42,7 @@ const ClaimCacheForm = ({ cacheInfo }: { cacheInfo: CacheState }) => {
               onChange={e => handleKeyChange(index, e)}
             />
             <FontAwesomeIcon
-              icon={faMinusCircle}
+              icon={"minus-circle"}
               onClick={() => deleteKey(index)}
               size="lg"
             />

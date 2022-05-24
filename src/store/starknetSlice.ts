@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AnyKindOfDictionary } from "lodash";
-import { ProviderInterface, defaultProvider } from "starknet";
+import { defaultProvider, Provider } from "starknet";
 import { AppState } from "../store";
 import { connectWalletRequest } from "../walletProxy/events";
 import { createMetacache } from "./metacacheSlice";
@@ -22,6 +22,8 @@ export const getStarknet = createAsyncThunk("web3/loadStarknet",
 
         // refresh block every 5 seconds.
         const intervalId = setInterval(() => dispatch(getLatestStarknetBlock("dummy_arg")), 5000);
+
+        console.log("Returning getStarknet")
         return { account, intervalId }
     }
 );
@@ -36,7 +38,7 @@ const getLatestStarknetBlock = createAsyncThunk("web3/getLatestStarknetBlock",
 )
 
 export interface StarknetState {
-    provider: ProviderInterface;
+    provider: Provider;
     account?: string;
     blockHashRefreshId?: NodeJS.Timeout;
     blockHash?: string;
