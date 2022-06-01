@@ -16,7 +16,7 @@ const CreateCacheForm = () => {
   const [isAssetSelectionModelOpen, setIsAssetSelectionModelOpen] = useState(false)
 
   const { currentUrl } = useAppSelector(state => state.currentUrl);
-  const metacacheAddress = useAppSelector(state => state.metacache.contract.address);
+  const metacacheAddress = useAppSelector(state => state.metacache.contract?.address);
   const { account } = useAppSelector(state => state.starknet)
 
   const token = useTokenInfo(tokenAddress);

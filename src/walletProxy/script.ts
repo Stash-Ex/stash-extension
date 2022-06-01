@@ -18,11 +18,12 @@ const getStarknetWithRetry = async (getAuthorization = false, retries = 5, sleep
     while (attempts++ < retries) {
         try {
             const starknet = await connect({ showList: getAuthorization });
-            await starknet.enable();
+
+            await starknet?.enable();
 
             console.log("Starknet: ", starknet);
 
-            if (starknet.isConnected) {
+            if (starknet?.isConnected) {
                 console.log("connected")
                 return starknet.account.address;
             } else {
