@@ -8,14 +8,12 @@ import { useAllowance, useTokenApprove, useTokenInfo } from "../../web3/hooks"
 import { useAppSelector } from "../../store/hooks"
 import ConnectedComponent from "../ConnectedComponent"
 import { toNativeTokenAmount } from "../../web3/starknet/utils"
-import AssetSelectionModal from "../ModalView/AssetSelectionModal"
 
 const CreateCacheForm = () => {
   const [keys, setKeys] = useState([""])
   const [hint, setHint] = useState("")
   const [tokenAddress, setTokenAddress] = useState("0x07394cbe418daa16e42b87ba67372d4ab4a5df0b05c6e554d158458ce245bc10");
   const [amount, setAmount] = useState(0);
-  const [isAssetSelectionModelOpen, setIsAssetSelectionModelOpen] = useState(false)
 
   const { currentUrl } = useAppSelector(state => state.currentUrl);
   const metacacheAddress = useAppSelector(state => state.metacache.contract?.address);
@@ -60,19 +58,8 @@ const CreateCacheForm = () => {
 
   return (
     <form onSubmit={e => e.preventDefault()}>
-      <h5>Assets</h5>
-      <div className="flex items-center justify-center">
-        <button
-          type="button"
-          onClick={() => setIsAssetSelectionModelOpen(true)}
-          className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        >
-          Open dialog
-        </button>
-      </div>
-      <AssetSelectionModal
-        isOpen={isAssetSelectionModelOpen}
-        closeModal={() => setIsAssetSelectionModelOpen(false)} />
+      <h2>Add Asset to Stash</h2>
+      <br />
       <label className="text" htmlFor="tokenaddress" >Token Address:</label>
       <input
         type="text"
@@ -90,7 +77,8 @@ const CreateCacheForm = () => {
         type="number"
         min="0"
         value={amount}
-        onChange={e => setAmount(parseFloat(e.target.value) || 0)} /><br /><br />
+        onChange={e => setAmount(parseFloat(e.target.value) || 0)} />
+      <hr className="p-2 m-2" />
       <h5>{"Keys "}
         <FontAwesomeIcon
           icon={faKey}
@@ -105,12 +93,16 @@ const CreateCacheForm = () => {
             onChange={e => handleKeyChange(index, e)}
           />
           <FontAwesomeIcon
+            className="ml-2"
             icon={faMinusCircle}
             onClick={() => deleteKey(index)}
           />
         </div>
       ))}
-      <button type="button" onClick={addNewKeyInput}>Add Key</button>
+      <button
+        className="px-4 py-1 text-sm font-semibold rounded-full border border-purple-200 text-white bg-purple-600 hover:bg-purple-400 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
+        type="button" onClick={addNewKeyInput}>Add Key</button>
+      <hr className="p-3 m-3" />
       <h5>{"Hint "}
         <FontAwesomeIcon
           icon={faLightbulb}
@@ -134,4 +126,5 @@ const CreateCacheForm = () => {
     </form>
   )
 }
+
 export default CreateCacheForm;

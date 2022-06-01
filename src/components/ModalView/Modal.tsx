@@ -22,8 +22,8 @@ export default function Modal({ isOpen, closeModal, title, children, action }) {
             ${isOpen ? "opacity-100 pointer-events-auto" : ""}`}
             onClick={closeModal}>
             <div
-                className={`w-4/5 bg-white bg-opacity-100 border border-solid border-black z-20 flex-col
-                transition-all ease-in-out duration-300 -translate-y-52 ${isOpen ? "translate-y-0" : ""}`}
+                className={`w-4/5 bg-white bg-opacity-100 border border-solid border-black rounded-lg z-20 flex-col
+                 transition-all ease-in-out duration-300 -translate-y-52 ${isOpen ? "translate-y-0" : ""}`}
                 onClick={e => e.stopPropagation()}>
                 <div className='p-2'>
                     <h4 className='m-0'>{title}</h4>

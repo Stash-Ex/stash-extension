@@ -20,7 +20,7 @@ export const useTokenContract = (address: string) => {
 
     useMemo(() => {
         doesContractExist(address, provider)
-            .then(res => res && setContract(ERC20.createERC20Contract(address, provider)))
+            .then(res => setContract(res ? ERC20.createERC20Contract(address, provider) : undefined))
     }, [address, provider]);
 
     return contract;
@@ -34,10 +34,14 @@ export const useTokenInfo = (address: string): TokenInfo => {
     const contract = useTokenContract(address);
 
     useEffect(() => {
-        if (contract) {
+        if (contract && contract.address === address) {
             ERC20.name(contract).then(res => setName(res));
             ERC20.symbol(contract).then(res => setSymbol(res));
             ERC20.decimals(contract).then(res => setDecimals(res));
+        } else {
+            setName(undefined)
+            setSymbol(undefined)
+            setDecimals(undefined)
         }
     }, [address, contract])
 
