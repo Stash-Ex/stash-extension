@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLightbulb } from "@fortawesome/free-regular-svg-icons"
+import { faKey, faMinusCircle } from "@fortawesome/free-solid-svg-icons"
 import { useDispatch } from "react-redux"
 import { createCache } from "../../store/metacacheSlice"
 import { useAllowance, useTokenApprove, useTokenInfo } from "../../web3/hooks"
@@ -91,8 +93,7 @@ const CreateCacheForm = () => {
         onChange={e => setAmount(parseFloat(e.target.value) || 0)} /><br /><br />
       <h5>{"Keys "}
         <FontAwesomeIcon
-          icon={"key"}
-          size="lg"
+          icon={faKey}
         />
       </h5>
       {keys.map((cacheKey, index) => (
@@ -104,17 +105,16 @@ const CreateCacheForm = () => {
             onChange={e => handleKeyChange(index, e)}
           />
           <FontAwesomeIcon
-            icon={"minus-circle"}
+            icon={faMinusCircle}
             onClick={() => deleteKey(index)}
-            size="lg"
           />
         </div>
       ))}
       <button type="button" onClick={addNewKeyInput}>Add Key</button>
       <h5>{"Hint "}
         <FontAwesomeIcon
-          icon={"lightbulb-exclamation-on"}
-          size="lg"
+          icon={faLightbulb}
+        // size="lg"
         />
       </h5>
       <textarea
