@@ -26,7 +26,7 @@ export default function Modal({ isOpen, closeModal, title, children, action }) {
                  transition-all ease-in-out duration-300 -translate-y-52 ${isOpen ? "translate-y-0" : ""}`}
                 onClick={e => e.stopPropagation()}>
                 <div className='p-2'>
-                    <h4 className='m-0'>{title}</h4>
+                    <h2 className='m-0 text-lg font-bold'>{title}</h2>
                 </div>
                 <div className='p-2 border-t border-b border-solid border-gray-300'>
                     {children}

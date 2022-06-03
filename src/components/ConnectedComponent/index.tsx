@@ -11,7 +11,7 @@ const ConnectedComponent = ({ children }) => {
     if (!account) {
         return (
             <div>
-                <button className="px-4 py-1 text-sm font-semibold rounded-full border border-purple-200 text-white bg-purple-600 hover:bg-purple-400 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
+                <button className="btn-primary"
                     onClick={() => dispatch(getStarknet(true))}
                 >
                     Connect Wallet

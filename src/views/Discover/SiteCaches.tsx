@@ -26,6 +26,7 @@ const SiteCaches = () => {
 
   return (
     <div>
+      <h2 className='font-mono text-2xl'>Stash List</h2>
       <p className='text-lg'><span className='text-red-500'>{cacheCount}</span> caches on <span className='font-bold'>{currentUrl}</span></p>
       {caches.map((cache, index) => (
         <div className='py-8 px-8 max-w-sm mx-auto rounded-xl shadow-lg space-y-2'>

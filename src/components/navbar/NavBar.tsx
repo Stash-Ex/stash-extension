@@ -6,7 +6,7 @@ import { VoyagerLink } from '../VoyagerLink';
 
 const navLinks = [
   { name: 'Discover', href: "/Claim" },
-  { name: 'Create', href: "/Create" },
+  { name: 'Stash', href: "/Create" },
 ]
 
 const NavBar = ({ account }) => {

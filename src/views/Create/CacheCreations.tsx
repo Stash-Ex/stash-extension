@@ -20,7 +20,7 @@ const CacheCreations = () => {
 
   return (
     <div>
-      <p className='text-lg mb-3'>Create stash on <span className='font-bold'>{currentUrl}</span></p>
+      <p className='text-2xl font-semibold mb-4'>Create a stash!</p>
       <CreateCacheForm />
     </div>
   )
