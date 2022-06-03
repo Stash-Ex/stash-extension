@@ -76,7 +76,7 @@ const CreateCacheForm = () => {
         <div className="flex flex-row justify-center items-start">
           <div className="m-1 flex-1">
             <button
-              className="border border-red-200 text-white bg-red-600 hover:bg-red-400 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 py-2 px-4 text-center rounded-2xl"
+              className="border border-red-200 text-white bg-primary-600 hover:bg-primary-400 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 py-2 px-4 text-center rounded-2xl"
               onClick={() => setIsTokenSelectionModalOpen(true)}>
               {token?.symbol || "Select Token"} <FontAwesomeIcon icon={faAngleDown} />
             </button>

@@ -1,11 +1,12 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { AppState } from '../../store';
 
 import CreateCacheForm from '../../components/forms/CreateCacheForm';
 import { useAppDispatch } from '../../store/hooks';
+import ConnectedComponent from '../../components/ConnectedComponent';
 
 const CacheCreations = () => {
   const { currentUrl, loading } = useSelector((state: AppState) => state.currentUrl);
@@ -21,7 +22,9 @@ const CacheCreations = () => {
   return (
     <div>
       <p className='text-2xl font-semibold mb-4'>Create a stash!</p>
-      <CreateCacheForm />
+      <ConnectedComponent>
+        <CreateCacheForm />
+      </ConnectedComponent>
     </div>
   )
 }
