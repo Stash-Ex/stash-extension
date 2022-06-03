@@ -2,11 +2,11 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Cache from '../../components/cache/Cache';
+import Stash from '../../components/stash/Stash';
 import { getNumCaches, loadCaches } from '../../store/metacacheSlice';
 import { useAppSelector } from '../../store/hooks';
 
-const SiteCaches = () => {
+const DiscoverStashes = () => {
   const { currentUrl } = useAppSelector(state => state.currentUrl);
   const { cacheCount, contract, caches } = useAppSelector(state => state.metacache);
   const blockNumber = useAppSelector(state => state.starknet.blockHash);
@@ -30,11 +30,11 @@ const SiteCaches = () => {
       <p className='text-lg'><span className='text-red-500'>{cacheCount}</span> caches on <span className='font-bold'>{currentUrl}</span></p>
       {caches.map((cache, index) => (
         <div className='py-8 px-8 max-w-sm mx-auto rounded-xl shadow-lg space-y-2'>
-          <Cache key={index.toString()} cache={cache} />
+          <Stash key={index.toString()} cache={cache} />
         </div>
       ))}
     </div>
   )
 }
 
-export default SiteCaches;
+export default DiscoverStashes;

@@ -1,18 +1,18 @@
 import React from "react"
 
-import ClaimCacheForm from '../forms/ClaimCacheForm';
+import ClaimStashForm from '../forms/ClaimStashForm';
 import { CacheState } from "../../store/metacacheSlice";
 import { useTokenInfo } from "../../web3/hooks";
 import { VoyagerLink } from "../VoyagerLink";
 
 import { fromNativeTokenAmount } from "../../web3/starknet/utils";
 
-const Cache = ({ cache }: { cache: CacheState }) => {
+const Stash = ({ cache }: { cache: CacheState }) => {
   const { decimals, address, symbol } = useTokenInfo(cache.token);
 
   return (
     <div className="flex flex-col">
-      <h3>Cache #{cache.id}</h3>
+      <h3 className="text-lg font-bold">Stash #{cache.id}</h3>
       <p>Prize: {decimals && fromNativeTokenAmount(cache.amount, decimals)} {
         address && symbol && (
           <VoyagerLink.Contract
@@ -23,9 +23,9 @@ const Cache = ({ cache }: { cache: CacheState }) => {
       </p>
       <p>Hint: {cache.hint}</p>
       <p>Owner: <VoyagerLink.Contract contract={cache.owner} /></p>
-      {cache.claimed ? "Claimed" : <ClaimCacheForm cacheInfo={cache} />}
+      {cache.claimed ? "Claimed" : <ClaimStashForm cacheInfo={cache} />}
     </div>
   )
 }
 
-export default Cache;
+export default Stash;

@@ -16,7 +16,7 @@ export default function AssetSelectionModal({ isOpen, closeModal, onSubmit }) {
             closeModal={closeModal}
             action={
                 <button
-                    className="px-4 py-1 mt-2 text-sm font-semibold rounded-full border border-red-200 text-white bg-red-600 hover:bg-red-400 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2"
+                    className="btn-primary"
                     onClick={isValidToken(token) ? () => { onSubmit(token.address); closeModal(); } : closeModal}
                 >
                     {isValidToken(token) ? "Add Token" : "Close"}

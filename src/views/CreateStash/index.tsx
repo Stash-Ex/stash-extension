@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux';
 
 import { AppState } from '../../store';
 
-import CreateCacheForm from '../../components/forms/CreateCacheForm';
+import CreateStashForm from '../../components/forms/CreateStashForm';
 import { useAppDispatch } from '../../store/hooks';
 import ConnectedComponent from '../../components/ConnectedComponent';
 
-const CacheCreations = () => {
+const CreateStash = () => {
   const { currentUrl, loading } = useSelector((state: AppState) => state.currentUrl);
   const dispatch = useAppDispatch();
 
@@ -23,10 +23,10 @@ const CacheCreations = () => {
     <div>
       <p className='text-2xl font-semibold mb-4'>Create a stash!</p>
       <ConnectedComponent>
-        <CreateCacheForm />
+        <CreateStashForm />
       </ConnectedComponent>
     </div>
   )
 }
 
-export default CacheCreations;
+export default CreateStash;

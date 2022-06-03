@@ -5,7 +5,7 @@ import { CacheState, claimCache } from "../../store/metacacheSlice"
 import { useDispatch } from "react-redux"
 import ConnectedComponent from "../ConnectedComponent"
 
-const ClaimCacheForm = ({ cacheInfo }: { cacheInfo: CacheState }) => {
+const ClaimStashForm = ({ cacheInfo }: { cacheInfo: CacheState }) => {
   const [cacheKeys, setCacheKeys] = useState([""])
   const dispatch = useDispatch();
 
@@ -47,9 +47,9 @@ const ClaimCacheForm = ({ cacheInfo }: { cacheInfo: CacheState }) => {
         <button className="btn-primary" onClick={addNewKeyInput}>Add Key</button>
       </div>
       <div>
-        <ConnectedComponent><button className="btn-primary" onClick={submitClaim}>Claim Cache</button></ConnectedComponent>
+        <ConnectedComponent><button className="btn-primary" onClick={submitClaim}>Claim Stash</button></ConnectedComponent>
       </div>
     </>
   )
 }
-export default ClaimCacheForm;
+export default ClaimStashForm;

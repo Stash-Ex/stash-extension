@@ -11,7 +11,7 @@ import { toNativeTokenAmount } from "../../web3/starknet/utils"
 import AssetSelectionModal from "../ModalView/AssetSelectionModal"
 import { VoyagerLink } from "../VoyagerLink"
 
-const CreateCacheForm = () => {
+const CreateStashForm = () => {
   const [keys, setKeys] = useState([""])
   const [hint, setHint] = useState("")
   const [tokenAddress, setTokenAddress] = useState("0x07394cbe418daa16e42b87ba67372d4ab4a5df0b05c6e554d158458ce245bc10");
@@ -151,4 +151,4 @@ const CreateCacheForm = () => {
   )
 }
 
-export default CreateCacheForm;
+export default CreateStashForm;

@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { getCurrentUrl } from './chromeServices/currentUrlSlice';
 
-import SiteCaches from './views/Discover/SiteCaches';
+import DiscoverStashes from './views/DiscoverStashes'
 import NavBar from './components/navbar/NavBar';
-import CacheCreations from './views/Create/CacheCreations';
+import CreateStash from './views/CreateStash';
 import { AppState } from './store';
 import { getStarknet } from './store/starknetSlice';
 
@@ -34,11 +34,11 @@ const App = () => {
       <NavBar account={account} />
       <main className='py-2 px-2'>
         <Switch>
-          <Route exact path="/Claim" component={SiteCaches} />
+          <Route exact path="/Claim" component={DiscoverStashes} />
           <Route exact path="/">
             <Redirect to="/Claim" />
           </Route>
-          <Route exact path="/Create" component={CacheCreations} />
+          <Route exact path="/Create" component={CreateStash} />
         </Switch>
       </main>
     </div>
