@@ -1,9 +1,9 @@
 import React, { useState } from "react"
-import CacheKey from "../cache/CacheKey"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faKey, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faMinusCircle } from '@fortawesome/free-solid-svg-icons'
 import { CacheState, claimCache } from "../../store/metacacheSlice"
 import { useDispatch } from "react-redux"
+import ConnectedComponent from "../ConnectedComponent"
 
 const ClaimCacheForm = ({ cacheInfo }: { cacheInfo: CacheState }) => {
   const [cacheKeys, setCacheKeys] = useState([""])
@@ -28,13 +28,9 @@ const ClaimCacheForm = ({ cacheInfo }: { cacheInfo: CacheState }) => {
 
   return (
     <>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <div>
         {cacheKeys.map((cacheKey, index) => (
           <div key={"Key" + index}>
-            <FontAwesomeIcon
-              icon={"key"}
-              size="lg"
-            />
             <input
               type="text"
               placeholder={`Key Part #${index + 1}`}
@@ -42,15 +38,17 @@ const ClaimCacheForm = ({ cacheInfo }: { cacheInfo: CacheState }) => {
               onChange={e => handleKeyChange(index, e)}
             />
             <FontAwesomeIcon
-              icon={"minus-circle"}
+              className="ml-1"
+              icon={faMinusCircle}
               onClick={() => deleteKey(index)}
-              size="lg"
             />
           </div>
         ))}
-        <button onClick={addNewKeyInput}>Add Key</button>
-      </form>
-      <button onClick={submitClaim}>Claim Cache</button>
+        <button className="btn-primary" onClick={addNewKeyInput}>Add Key</button>
+      </div>
+      <div>
+        <ConnectedComponent><button className="btn-primary" onClick={submitClaim}>Claim Cache</button></ConnectedComponent>
+      </div>
     </>
   )
 }
