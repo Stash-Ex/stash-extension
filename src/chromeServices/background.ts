@@ -1,6 +1,7 @@
 // main handler for messages received from content script 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request["message"] === "update_cache_count") {
+  console.log("message" + JSON.stringify(request))
+  if (request["message"] === "update_stash_count") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       var activeTab = tabs[0];
       chrome.action.getBadgeText({ tabId: activeTab.id }, (currentBadgeText) => {

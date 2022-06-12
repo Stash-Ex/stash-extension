@@ -1,6 +1,6 @@
 import { connect } from '@argent/get-starknet'
 import { createERC20Contract } from '../web3/starknet/erc20.service';
-import { createMetacacheContract, invokeClaimCache, invokeCreateCache } from '../web3/starknet/metacache.service';
+import { createStashProtocolContract, invokeClaimStash, invokeCreateStash } from '../web3/starknet/stashprotocol.service';
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
@@ -37,37 +37,37 @@ const getStarknetWithRetry = async (getAuthorization = false, retries = 5, sleep
     }
 }
 
-document.addEventListener('METACACHE_CREATE_CACHE_REQ', async ({ detail }: CustomEvent) => {
-    console.log("METACACHE_CREATE_CACHE_REQ");
+document.addEventListener('STASHPROTOCOL_CREATE_STASH_REQ', async ({ detail }: CustomEvent) => {
+    console.log("STASHPROTOCOL_CREATE_STASH_REQ");
 
     const starknet = await connect({ showList: true });
     await starknet.enable();
 
     if (starknet.isConnected) {
-        const contract = createMetacacheContract(starknet.account);
-        const createCache = invokeCreateCache(contract);
+        const contract = createStashProtocolContract(starknet.account);
+        const createStash = invokeCreateStash(contract);
 
         const { location, token, amount, keys, hint } = detail;
-        const res = await createCache(location, token, amount, keys, hint);
-        console.log("SCRIPT:CREATE_CACHE:" + JSON.stringify(res));
-        document.dispatchEvent(new CustomEvent('METACACHE_CREATE_CACHE_RES', { detail: res }))
+        const res = await createStash(location, token, amount, keys, hint);
+        console.log("SCRIPT:CREATE_STASH:" + JSON.stringify(res));
+        document.dispatchEvent(new CustomEvent('STASHPROTOCOL_CREATE_STASH_RES', { detail: res }))
     }
 })
 
-document.addEventListener('METACACHE_CLAIM_CACHE_REQ', async ({ detail }: CustomEvent) => {
-    console.log("METACACHE_CLAIM_CACHE_REQ");
+document.addEventListener('STASHPROTOCOL_CLAIM_STASH_REQ', async ({ detail }: CustomEvent) => {
+    console.log("STASHPROTOCOL_CLAIM_STASH_REQ");
 
     const starknet = await connect({ showList: true });
     await starknet.enable();
 
     if (starknet.isConnected) {
-        const contract = createMetacacheContract(starknet.account);
-        const createCache = invokeClaimCache(contract);
+        const contract = createStashProtocolContract(starknet.account);
+        const createStash = invokeClaimStash(contract);
 
         const { location, id, keys } = detail;
-        const res = await createCache(location, id, keys);
-        console.log("SCRIPT:CLAIM_CACHE:" + JSON.stringify(res));
-        document.dispatchEvent(new CustomEvent('METACACHE_CLAIM_CACHE_RES', { detail: res }))
+        const res = await createStash(location, id, keys);
+        console.log("SCRIPT:CLAIM_STASH:" + JSON.stringify(res));
+        document.dispatchEvent(new CustomEvent('STASHPROTOCOL_CLAIM_STASH_RES', { detail: res }))
     }
 })
 

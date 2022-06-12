@@ -1,5 +1,5 @@
 import { Contract, shortString, ProviderInterface, Abi, AddTransactionResponse } from "starknet"
-import { BigNumberish, toBN, toHex } from "starknet/dist/utils/number"
+import { BigNumberish, toBN, toHex, toFelt } from "starknet/dist/utils/number"
 import { bnToUint256, uint256ToBN } from "starknet/dist/utils/uint256";
 
 import ERC20 from "../abi/ERC20.json";

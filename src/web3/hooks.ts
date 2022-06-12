@@ -1,7 +1,7 @@
 import { BigNumberish } from "ethers"
 import { useEffect, useMemo, useState } from "react"
 import { Contract, uint256 } from "starknet"
-import { toBN } from "starknet/dist/utils/number"
+import { toBN, toFelt } from "starknet/dist/utils/number"
 import { useAppSelector } from "../store/hooks"
 import { tokenInvokeRequest } from "../walletProxy/events"
 import * as ERC20 from "./starknet/erc20.service"
@@ -79,7 +79,8 @@ export const useTokenApprove = (tokenAddress) => {
     useEffect(() => {
         if (contract) {
             const invokeContract = (spender: string, amount: BigNumberish) => {
-                const args = { spender, ...uint256.bnToUint256(toBN(amount)) };
+                const am = uint256.bnToUint256(toBN(amount));
+                const args = [spender, [am.low, am.high]];
                 console.log("Invoking contract: ", args)
                 tokenInvokeRequest(contract.address, "approve", args).then(transaction => {
                     console.log("Invoked Contract: " + JSON.stringify(transaction));

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLightbulb } from "@fortawesome/free-regular-svg-icons"
 import { faKey, faMinusCircle, faGlobe, faCoins, faAngleDown } from "@fortawesome/free-solid-svg-icons"
 import { useDispatch } from "react-redux"
-import { createCache } from "../../store/metacacheSlice"
+import { createStash } from "../../store/stashprotocolSlice"
 import { useAllowance, useTokenApprove, useTokenInfo } from "../../web3/hooks"
 import { useAppSelector } from "../../store/hooks"
 import ConnectedComponent from "../ConnectedComponent"
@@ -19,11 +19,11 @@ const CreateStashForm = () => {
   const [isTokenSelectionModalOpen, setIsTokenSelectionModalOpen] = useState(false)
 
   const { currentUrl } = useAppSelector(state => state.currentUrl);
-  const metacacheAddress = useAppSelector(state => state.metacache.contract?.address);
+  const stashprotocolAddress = useAppSelector(state => state.stashprotocol.contract?.address);
   const { account } = useAppSelector(state => state.starknet)
 
   const token = useTokenInfo(tokenAddress);
-  const allowance = useAllowance(token, account, metacacheAddress);
+  const allowance = useAllowance(token, account, stashprotocolAddress);
   const { invokeTokenApprove } = useTokenApprove(token.address);
   const dispatch = useDispatch();
 
@@ -43,7 +43,7 @@ const CreateStashForm = () => {
     setHint(e.target.value);
   }
 
-  const createCacheOnSubmit = useCallback((e) => {
+  const createStashOnSubmit = useCallback((e) => {
     const args = {
       location: currentUrl,
       token: tokenAddress,
@@ -51,11 +51,11 @@ const CreateStashForm = () => {
       keys,
       hint
     }
-    dispatch(createCache(args))
+    dispatch(createStash(args))
   }, [amount, token.decimals, dispatch, currentUrl, tokenAddress, keys, hint])
 
   const approveTokenClick = e => {
-    invokeTokenApprove && invokeTokenApprove(metacacheAddress, toNativeTokenAmount(amount, token?.decimals))
+    invokeTokenApprove && invokeTokenApprove(stashprotocolAddress, toNativeTokenAmount(amount, token?.decimals))
     console.log("Approving")
   }
 
@@ -105,13 +105,13 @@ const CreateStashForm = () => {
         <h2 className="font-bold text-xl">Keys <FontAwesomeIcon icon={faKey} /></h2>
         <p className="text-xs">Enter keys that can unlock the stash.</p>
       </div>
-      {keys.map((cacheKey, index) => (
+      {keys.map((stashKey, index) => (
         <div className="m-2" key={"Key" + index}>
           <input
             className="m-1"
             type="text"
             placeholder={`Key #${index + 1}`}
-            value={cacheKey}
+            value={stashKey}
             maxLength={30}
             onChange={e => handleKeyChange(index, e)}
           />
@@ -143,7 +143,7 @@ const CreateStashForm = () => {
       <ConnectedComponent>
         <button
           className="btn-primary"
-          onClick={amount > 0 && allowance < amount ? approveTokenClick : createCacheOnSubmit}>
+          onClick={amount > 0 && allowance < amount ? approveTokenClick : createStashOnSubmit}>
           {amount > 0 && allowance < amount ? "Approve Token" : "Create Stash"}
         </button>
       </ConnectedComponent>

@@ -3,7 +3,7 @@ import { AnyKindOfDictionary } from "lodash";
 import { defaultProvider, Provider } from "starknet";
 import { AppState } from "../store";
 import { connectWalletRequest } from "../walletProxy/events";
-import { createMetacache } from "./metacacheSlice";
+import { createStashProtocol } from "./stashprotocolSlice";
 
 export const getStarknet = createAsyncThunk("web3/loadStarknet",
     async (getAuthorization: boolean, { dispatch, getState }) => {
@@ -12,7 +12,7 @@ export const getStarknet = createAsyncThunk("web3/loadStarknet",
 
         //TODO: Return starknet provider info from Argent and create here 
         const { starknet } = getState() as AppState;
-        dispatch(createMetacache(starknet.provider));
+        dispatch(createStashProtocol(starknet.provider));
         dispatch(getLatestStarknetBlock("dummy_arg"))
 
         // clear prior blockhash intervals, if any

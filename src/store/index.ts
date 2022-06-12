@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import currentUrlSlice from '../chromeServices/currentUrlSlice'
-import metacacheSlice from './metacacheSlice'
+import stashprotocolSlice from './stashprotocolSlice'
 import starknetSlice from './starknetSlice'
 
 export const store = configureStore({
   reducer: {
     currentUrl: currentUrlSlice,
     starknet: starknetSlice,
-    metacache: metacacheSlice,
+    stashprotocol: stashprotocolSlice,
   },
 })
 

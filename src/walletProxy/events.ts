@@ -32,15 +32,15 @@ export const connectWalletRequest = async (getAuthorization: boolean) => {
     return starknetWallet;
 }
 
-export const invokeCreateCacheRequest = async (args: any) => {
-    const event = new CustomEvent('METACACHE_CREATE_CACHE_REQ', { detail: { ...args } });
-    const submitResponse = await dispatchEventAndWait(event, 'METACACHE_CREATE_CACHE_RES', handleStarknetChange);
+export const invokeCreateStashRequest = async (args: any) => {
+    const event = new CustomEvent('STASHPROTOCOL_CREATE_STASH_REQ', { detail: { ...args } });
+    const submitResponse = await dispatchEventAndWait(event, 'STASHPROTOCOL_CREATE_STASH_RES', handleStarknetChange);
     return submitResponse;
 }
 
-export const invokeClaimCacheRequest = async (args: any) => {
-    const event = new CustomEvent('METACACHE_CLAIM_CACHE_REQ', { detail: { ...args } });
-    const submitResponse = await dispatchEventAndWait(event, 'METACACHE_CLAIM_CACHE_RES', handleStarknetChange);
+export const invokeClaimStashRequest = async (args: any) => {
+    const event = new CustomEvent('STASHPROTOCOL_CLAIM_STASH_REQ', { detail: { ...args } });
+    const submitResponse = await dispatchEventAndWait(event, 'STASHPROTOCOL_CLAIM_STASH_RES', handleStarknetChange);
     return submitResponse;
 }
 

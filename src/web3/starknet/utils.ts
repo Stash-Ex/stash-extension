@@ -1,5 +1,5 @@
 import { shortString, hash, number, Provider, encode } from "starknet";
-import { BigNumberish, toBN } from "starknet/dist/utils/number";
+import { BigNumberish, toBN, toHex } from "starknet/dist/utils/number";
 
 
 export const doesContractExist = async (address: string, provider: Provider) => {
@@ -38,17 +38,17 @@ export const fromNativeTokenAmount = (amount: BigNumberish, decimals: BigNumberi
 }
 
 /**
- * Splits text into chunks `chunkSize` string.
+ * Splits text into chunks of shortstring encoded felts.
  * 
  * @param text Text to split
  * @param chunkSize size of each chunk. default is 31 characters
  */
 export const makeChunks = (text: string, chunkSize = 31): Array<string> => {
-    if (text.length <= chunkSize) return [text]
+    if (text.length <= chunkSize) return [shortString.encodeShortString(text)]
 
     let chunks = [];
     for (var i = 0; i < text.length; i += chunkSize) {
-        chunks.push(text.slice(i, i + chunkSize))
+        chunks.push(shortString.encodeShortString(text.slice(i, i + chunkSize)))
     }
 
     return chunks;
@@ -56,7 +56,7 @@ export const makeChunks = (text: string, chunkSize = 31): Array<string> => {
 
 /**
  * Computes hash chain of keys prepended with number of keys and **in reverse**
- * Same method used when constructing hash to claim cache
+ * Same method used when constructing hash to claim stash
  * 
  * https://github.com/starkware-libs/cairo-lang/blob/fc97bdd8322a7df043c87c371634b26c15ed6cee/src/starkware/cairo/common/hash_chain.cairo#L8
  * @param keys keys to be hashed
@@ -68,4 +68,8 @@ export const computeHashChain = (keys: Array<string>): BigNumberish => {
     ]
         .reverse()
         .reduce((x, y) => hash.pedersen([y, x]));
+}
+
+export const buildHint = (hints: Array<BigNumberish>): string => {
+    return [...hints.map(h => shortString.decodeShortString(toHex(h)))].join("")
 }
