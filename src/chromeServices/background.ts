@@ -1,6 +1,10 @@
 // main handler for messages received from content script 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log("message" + JSON.stringify(request))
+
+  // The app updates the background script with the stash count on page for badge display.
+  // Can't use starknet.js in service worker due to dependence on axios
+  // https://github.com/axios/axios/issues/1219
   if (request["message"] === "update_stash_count") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       var activeTab = tabs[0];
@@ -12,6 +16,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       })
     });
   }
+
+
 });
 
 // Used to toggle the content script on the page

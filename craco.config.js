@@ -37,7 +37,6 @@ module.exports = {
                     ...(webpackConfig.plugins.map(p => {
                         if (isCssConfig(p)) {
                             p.options.filename = "static/css/[name].css"
-                            p.options.chunkFilename = "static/css/[name].chunk.css"
                         }
                         return p;
                     }))
