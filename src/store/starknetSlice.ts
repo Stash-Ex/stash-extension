@@ -5,6 +5,8 @@ import { AppState } from "../store";
 import { connectWalletRequest } from "../walletProxy/events";
 import { createStashProtocol } from "./stashprotocolSlice";
 
+import { connect } from '@argent/get-starknet'
+
 export const getStarknet = createAsyncThunk("web3/loadStarknet",
     async (getAuthorization: boolean, { dispatch, getState }) => {
         const { account } = await connectWalletRequest(getAuthorization);

@@ -5,7 +5,6 @@ import { buildHint, computeHashChain, makeChunks } from "./utils";
 import STASH from "../abi/Stash.json";
 import { StashState } from "../../store/stashprotocolSlice";
 
-// export const STASH_ADDRESS = "0x01fe1800f9d08e18cb1c321e33461fbed6ccfa769fc6957d3d611ba86da17d43";
 export const STASH_ADDRESS = "0x04a8e9b5b305568712a548c8be9cdf02f4ee53c81bd8e016785634253c094622"
 
 export const createStashProtocolContract = (provider: ProviderInterface) =>

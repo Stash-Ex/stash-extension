@@ -45,7 +45,7 @@ const AppFrame = () => {
 }
 
 const app = document.createElement('div');
-app.id = "metacache-extension-root";
+app.id = "stash-extension-root";
 
 // Toggle app on and off
 try {

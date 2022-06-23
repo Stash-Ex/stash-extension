@@ -1,10 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "MetaCache Extension",
-  "description": "This extension will display any caches stored on the user's current web page.",
+  "name": "Stash",
+  "description": "Create and discover stashes on the web.",
   "version": "1.0",
   "action": {
-    "default_icon": "icon.png"
+    "default_icon": "stash.png"
+  },
+  "icons": {
+    "128": "stash.png"
   },
   "background": {
     "service_worker": "./static/js/background.js"
