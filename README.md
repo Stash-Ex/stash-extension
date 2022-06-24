@@ -1,23 +1,47 @@
-# Stash
+# Table of contents
+- [Table of contents](#table-of-contents)
+- [Stash Extension Overview](#stash-extension-overview)
+  - [Some Use Cases](#some-use-cases)
+- [Installation](#installation)
+  - [Instructions](#instructions)
+- [Using the extension](#using-the-extension)
+  - [Claim a stash](#claim-a-stash)
+  - [Create a Stash](#create-a-stash)
+    - [Location](#location)
+    - [Contents](#contents)
+    - [Keys](#keys)
+    - [Hint](#hint)
+- [App Structure](#app-structure)
+- [Available Scripts](#available-scripts)
+  - [`yarn build`](#yarn-build)
 
-Stash is a one of a kind browser extension that enables new interactions and engagement with the web. Built on the Stash Protocol, this web extension allows you to lock and hide cryptocurrencies and NFTs for anyone else to find and unlock on any website or web-enabled location in the metaverse. 
+# Stash Extension Overview
 
-- Create scavenger hunts among your friends or collegues. Provide hints to guide them to the prize. 
-- Challenge your online community to solve a puzzle to redeem unique NFTs.  
-- Lock crypto on your website or profile page along with hints to encourage people to engage with your content in order to find the secret keys that unlock the stash.  
+Stash is a one of a kind browser extension that enables new interactions and engagement with the web. Built on the [Stash blockchain protocol](https://github.com/Stash-Ex/stash-protocol), this web extension allows you to stash digital assets on any website, and later discover and claim those stashes, in an entirely permissionless manner.  
+
+
+## Some Use Cases
+- Content creators can create stashes to reward their fans by hiding the unlock keys throughout their content, ensuring fans' engagement with the content to find all keys.
+- Brands can create scavenger hunts that guide users through a series of engagement points with their products and services that award users with crypto, NFTs or discounts for their products.
+- Organize private scavenger hunts across the internet.
+- Individuals can create stashes to challenge friends and other community members to find the keys to the puzzle.  
 
 Discover stashes as you browse the web and use the hints to find the keys and claim its contents.  
 This extension will notify you when there is a stash on the page you are browsing as well as provide an easy to use interface to claim and create stashes.
+
+![extension_overview](/documentation/extension_overview.png)
+
 
 # Installation
 
 This extension is designed for the Chrome web browser. It is not yet available on the extension store but can be built and installed from the source code in this repository.
 
-The extension requires that you have the [Argent X wallet](https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoodbb) for the [Starknet blockchain](https://starknet.io/) installed on the same browser.
+> **Note**  
+> The extension requires that you have the [Argent X wallet](https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoodbb) for the [Starknet blockchain](https://starknet.io/) installed on the same browser.
 
 ## Instructions
 
-1. Clone this repository: `git clone https://github.com/MosheStauber/stash-extension.git`
+1. Clone this repository: `git clone https://github.com/Stash-Ex/stash-extension.git`
 2. Install the application dependencies: `yarn install`
 3. Build the application: `yarn build`
 4. In chrome, navigate to `chrome://extensions/`
@@ -34,7 +58,7 @@ This section details how to use the extension to create and claim stashes as you
 > **Note**  
 > The Stash Protocol is currently only deployed on the goerli testnet and is subject to frequent changes and deployments. This extension will be updated to use the latest version (deployed address) of the protocol which will result in stashes created in prior protocol versions not being displayed.      
 > 
-> All versions of the protocol are recorded in the [Stash Protocol repository](https://github.com/MosheStauber/stashprotocol). In the event of an update you can either manually claim a stash using the [instructions in the protocol repository](https://github.com/MosheStauber/stashprotocol#claim-a-stash), or you can change the protocol address in this repository in `src/web3/starknet/stashprotocol.service.ts` and rebuild the extension with a specific version.   
+> All versions of the protocol are recorded in the [Stash Protocol repository](https://github.com/Stash-Ex/stash-protocol). In the event of an update you can either manually claim a stash using the [instructions in the protocol repository](https://github.com/Stash-Ex/stash-protocol#claim-a-stash), or you can change the protocol address in this repository in `src/web3/starknet/stashprotocol.service.ts` and rebuild the extension with a specific version.   
 
 ## Claim a stash
 In order to claim a stash, you must first discover a stash. This extension will let you know how many stashes are on the page you are browsing. The number of stashes will be displayed on the extension's icon next to the address bar in your browser. 
@@ -86,9 +110,9 @@ Because chrome extensions run in their own javascript context they do not have a
 
 The app will use its own bundled [Starknet.js](https://github.com/0xs34n/starknet.js) for all other starknet interactions. 
 
-## Available Scripts
+# Available Scripts
 
-### `yarn build`
+## `yarn build`
 
 Builds the app for production to the `build` folder.  
 It uses Craco to modify webpack and correctly bundle the app compatible with chrome extensions v3. 
