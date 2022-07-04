@@ -14,6 +14,7 @@
 - [App Structure](#app-structure)
 - [Available Scripts](#available-scripts)
   - [`yarn build`](#yarn-build)
+- [Roadmap](#roadmap)
 
 # Stash Extension Overview
 
@@ -116,3 +117,6 @@ The app will use its own bundled [Starknet.js](https://github.com/0xs34n/starkne
 
 Builds the app for production to the `build` folder.  
 It uses Craco to modify webpack and correctly bundle the app compatible with chrome extensions v3. 
+
+# Roadmap
+Please take a look at our [roadmap](https://github.com/orgs/Stash-Ex/projects/2) for details on exciting upcoming features!
